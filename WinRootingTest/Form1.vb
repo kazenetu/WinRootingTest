@@ -7,6 +7,13 @@
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' ラベルのイベント設定
         setHandler(Label1)
+        setHandler(Label2)
+        setHandler(Label3)
+        setHandler(Label4)
+        setHandler(Label5)
+        setHandler(Label6)
+        setHandler(Label7)
+        setHandler(Label8)
 
     End Sub
 
