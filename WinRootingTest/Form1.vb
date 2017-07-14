@@ -53,4 +53,49 @@
         target.Top = CInt((target.Top + e.Location.Y - basePoint.Y) / 50) * 50
     End Sub
 
+    Private Sub showRooting_Click(sender As Object, e As EventArgs) Handles showRooting.Click
+        Dim startLabel As Label = Label1
+
+        Dim labels As New SortedList(Of Integer, SortedList(Of Integer, Label))
+        For Each item As Control In Me.Controls
+            If TypeOf item Is Label AndAlso Not item Is Label1 Then
+                Dim label As Label = DirectCast(item, Label)
+                Dim pos As Point = label.Location
+                pos.X += label.Width / 2
+                pos.Y += label.Height / 2
+
+                If Not labels.ContainsKey(pos.Y) Then
+                    labels.Add(pos.Y, New SortedList(Of Integer, Label))
+                End If
+                labels(pos.Y).Add(pos.X, item)
+            End If
+        Next
+
+
+        'Draw
+        Dim ptStart As Point = startLabel.Location
+        ptStart.X += startLabel.Width / 2
+        ptStart.Y += startLabel.Height / 2
+
+        Dim ptEnd As Point
+
+        Dim p As New Pen(Color.Black, 3)
+        Using gr As Graphics = Me.CreateGraphics()
+            gr.FillRectangle(New SolidBrush(Me.BackColor), New RectangleF(0, 0, Me.Width, Me.Height))
+
+            For Each keyValue In labels
+                For Each l As Label In keyValue.Value.Values
+                    ptEnd = l.Location + New Point(l.Width / 2, l.Height / 2)
+
+                    gr.DrawLine(p, ptStart, ptEnd)
+
+                    ptStart = ptEnd
+                Next
+            Next
+
+
+
+
+        End Using
+    End Sub
 End Class

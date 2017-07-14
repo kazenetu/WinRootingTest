@@ -30,6 +30,7 @@ Partial Class Form1
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.showRooting = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label1
@@ -128,11 +129,21 @@ Partial Class Form1
         Me.Label8.Text = "中継点"
         Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'showRooting
+        '
+        Me.showRooting.Location = New System.Drawing.Point(528, 12)
+        Me.showRooting.Name = "showRooting"
+        Me.showRooting.Size = New System.Drawing.Size(109, 23)
+        Me.showRooting.TabIndex = 7
+        Me.showRooting.Text = "ルーティング表示"
+        Me.showRooting.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(702, 447)
+        Me.Controls.Add(Me.showRooting)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label6)
@@ -154,4 +165,5 @@ Partial Class Form1
     Friend WithEvents Label6 As Label
     Friend WithEvents Label7 As Label
     Friend WithEvents Label8 As Label
+    Friend WithEvents showRooting As Button
 End Class
