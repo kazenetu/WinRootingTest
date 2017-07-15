@@ -57,72 +57,72 @@
     End Sub
 
     ''' <summary>
+    ''' Labelルーティングの生成
+    ''' </summary>
+    ''' <returns></returns>
+    Private Function getRootingList() As List(Of Label)
+        Dim startLabel As Label = Label1
+
+        ' ラベルリスト作成
+        Dim labels As New List(Of Label)
+        For Each item As Control In Me.Controls
+            If TypeOf item Is Label AndAlso Not item Is Label1 Then
+                labels.Add(item)
+            End If
+        Next
+
+        ' 上段の左端と右端を取得する
+        Dim minY As Integer = labels.Min(Function(item) item.Location.Y)
+        Dim upperLineQuery = labels.Where(Function(item) item.Location.Y = minY)
+        Dim minX As Integer = upperLineQuery.Min(Function(i) i.Location.X)
+        Dim maxX As Integer = upperLineQuery.Max(Function(i) i.Location.X)
+
+        ' 対象のラベルを選択する
+        Dim targetX As Integer
+        If startLabel.Location.X > minX + (maxX - minX) / 2 Then
+            targetX = maxX
+        Else
+            targetX = minX
+        End If
+        Dim target As Label = upperLineQuery.Where(Function(item) item.Location.X = targetX).First()
+
+        ' リストを作成する
+        Dim result As New List(Of Label)
+        result.Add(startLabel)
+
+        ' 戻り値リストの追加と追加対象リストの削除
+        result.Add(target)
+        labels.Remove(target)
+
+        ' 経路選択
+        While (labels.LongCount > 0)
+            target = labels.OrderBy(Function(item) getDistance(item.Location, target.Location)).First()
+
+            ' 戻り値リストの追加と追加対象リストの削除
+            result.Add(target)
+            labels.Remove(target)
+        End While
+
+
+        Return result
+    End Function
+
+    Private Function getDistance(ByVal srcPos As Point, ByVal descPos As Point) As Double
+        Dim targetPos As Point = srcPos - descPos
+        Return Math.Sqrt((targetPos.X * targetPos.X) + (targetPos.Y * targetPos.Y))
+    End Function
+
+    ''' <summary>
     ''' ルーティング設定
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub showRooting_Click(sender As Object, e As EventArgs) Handles showRooting.Click
-        Dim startLabel As Label = Label1
-
-        Dim minX As Integer = Integer.MaxValue
-        Dim maxX As Integer = Integer.MinValue
-        Dim minY As Integer = Integer.MaxValue
-        Dim maxY As Integer = Integer.MinValue
-
-        ' アイテム追加
-        Dim labels As New SortedList(Of Integer, SortedList(Of Integer, Label))
-        For Each item As Control In Me.Controls
-            If TypeOf item Is Label AndAlso Not item Is Label1 Then
-                Dim label As Label = DirectCast(item, Label)
-                Dim pos As Point = label.Location
-                pos.X += label.Width / 2
-                pos.Y += label.Height / 2
-
-                If minX > pos.X Then
-                    minX = pos.X
-                End If
-                If maxX < pos.X Then
-                    maxX = pos.X
-                End If
-                If minY > pos.Y Then
-                    minY = pos.Y
-                End If
-                If maxY < pos.Y Then
-                    maxY = pos.Y
-                End If
-
-                If Not labels.ContainsKey(pos.Y) Then
-                    labels.Add(pos.Y, New SortedList(Of Integer, Label))
-                End If
-                labels(pos.Y).Add(pos.X, item)
-            End If
-        Next
-
-        ' ルーティングパスの作成
-        Dim pt As Point = startLabel.Location
-        pt.X += startLabel.Width / 2
-        pt.Y += startLabel.Height / 2
-        Dim rootings As New List(Of Label)
-        Dim isReverse As Boolean = False
-        If pt.X > minX + (maxX - minX) / 2 Then
-            isReverse = True
-        End If
-        For Each keyValue In labels
-            Dim target = keyValue.Value.OrderBy(Function(item) item.Key).ToList()
-            If isReverse Then
-                target = keyValue.Value.OrderByDescending(Function(item) item.Key).ToList()
-            End If
-
-            For Each item In target
-                rootings.Add(item.Value)
-            Next
-            isReverse = Not isReverse
-        Next
-        rootings.Insert(0, startLabel)
-
-
         ' ルーティングパスのクリア
         Me.clearRooting()
+
+        ' ルーティングリストを取得
+        Dim rootings As List(Of Label) = Me.getRootingList()
 
         'Draw
         Dim ptStart As Point = rootings(0).Location
