@@ -78,9 +78,11 @@
         Dim maxX As Integer = upperLineQuery.Max(Function(i) i.Location.X)
 
         ' 対象のラベルを選択する
+        Dim isReverce As Boolean = False
         Dim targetX As Integer
         If startLabel.Location.X > minX + (maxX - minX) / 2 Then
             targetX = maxX
+            isReverce = True
         Else
             targetX = minX
         End If
@@ -96,7 +98,18 @@
 
         ' 経路選択
         While (labels.LongCount > 0)
-            target = labels.OrderBy(Function(item) getDistance(item.Location, target.Location)).First()
+
+            Dim query = labels.Where(Function(item) True)
+            If isReverce Then
+                query = labels.Where(Function(item) item.Location.X <= target.Location.X AndAlso item.Location.Y <= target.Location.Y)
+            Else
+                query = labels.Where(Function(item) item.Location.X >= target.Location.X AndAlso item.Location.Y <= target.Location.Y)
+            End If
+            If Not query.Any() Then
+                query = labels.Where(Function(item) True)
+            End If
+
+            target = query.OrderBy(Function(item) getDistance(item.Location, target.Location)).First()
 
             ' 戻り値リストの追加と追加対象リストの削除
             result.Add(target)
