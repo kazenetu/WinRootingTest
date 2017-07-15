@@ -38,7 +38,7 @@ Partial Class Form1
         Me.Label1.BackColor = System.Drawing.Color.DimGray
         Me.Label1.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(12, 44)
+        Me.Label1.Location = New System.Drawing.Point(50, 50)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(60, 60)
         Me.Label1.TabIndex = 4
@@ -50,7 +50,7 @@ Partial Class Form1
         Me.Label2.BackColor = System.Drawing.Color.DimGray
         Me.Label2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(107, 125)
+        Me.Label2.Location = New System.Drawing.Point(100, 150)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(60, 60)
         Me.Label2.TabIndex = 5
@@ -62,7 +62,7 @@ Partial Class Form1
         Me.Label3.BackColor = System.Drawing.Color.DimGray
         Me.Label3.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Label3.ForeColor = System.Drawing.Color.White
-        Me.Label3.Location = New System.Drawing.Point(225, 125)
+        Me.Label3.Location = New System.Drawing.Point(250, 150)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(60, 60)
         Me.Label3.TabIndex = 5
@@ -74,7 +74,7 @@ Partial Class Form1
         Me.Label4.BackColor = System.Drawing.Color.DimGray
         Me.Label4.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(354, 125)
+        Me.Label4.Location = New System.Drawing.Point(400, 150)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(60, 60)
         Me.Label4.TabIndex = 5
@@ -86,7 +86,7 @@ Partial Class Form1
         Me.Label5.BackColor = System.Drawing.Color.DimGray
         Me.Label5.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Label5.ForeColor = System.Drawing.Color.White
-        Me.Label5.Location = New System.Drawing.Point(466, 125)
+        Me.Label5.Location = New System.Drawing.Point(550, 150)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(60, 60)
         Me.Label5.TabIndex = 5
@@ -98,7 +98,7 @@ Partial Class Form1
         Me.Label6.BackColor = System.Drawing.Color.DimGray
         Me.Label6.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Label6.ForeColor = System.Drawing.Color.White
-        Me.Label6.Location = New System.Drawing.Point(107, 309)
+        Me.Label6.Location = New System.Drawing.Point(100, 350)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(60, 60)
         Me.Label6.TabIndex = 5
@@ -110,7 +110,7 @@ Partial Class Form1
         Me.Label7.BackColor = System.Drawing.Color.DimGray
         Me.Label7.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Label7.ForeColor = System.Drawing.Color.White
-        Me.Label7.Location = New System.Drawing.Point(225, 309)
+        Me.Label7.Location = New System.Drawing.Point(250, 350)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(60, 60)
         Me.Label7.TabIndex = 5
@@ -122,7 +122,7 @@ Partial Class Form1
         Me.Label8.BackColor = System.Drawing.Color.DimGray
         Me.Label8.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Label8.ForeColor = System.Drawing.Color.White
-        Me.Label8.Location = New System.Drawing.Point(354, 309)
+        Me.Label8.Location = New System.Drawing.Point(400, 350)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(60, 60)
         Me.Label8.TabIndex = 5
