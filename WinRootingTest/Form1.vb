@@ -35,6 +35,9 @@
     Private Sub Label_MouseDown(sender As Object, e As MouseEventArgs)
         Dim target As Label = DirectCast(sender, Label)
         target.Tag = e.Location
+
+        ' ルーティングパスのクリア
+        Me.clearRooting()
     End Sub
 
     ''' <summary>
@@ -77,6 +80,8 @@
             End If
         Next
 
+        ' ルーティングパスのクリア
+        Me.clearRooting()
 
         'Draw
         Dim ptStart As Point = startLabel.Location
@@ -102,6 +107,15 @@
 
 
 
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' ルーティングパスのクリア
+    ''' </summary>
+    Private Sub clearRooting()
+        Using gr As Graphics = Me.CreateGraphics()
+            gr.FillRectangle(New SolidBrush(Me.BackColor), New RectangleF(0, 0, Me.Width, Me.Height))
         End Using
     End Sub
 End Class
