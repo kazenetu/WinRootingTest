@@ -101,9 +101,16 @@
 
             Dim query = labels.Where(Function(item) True)
             If isReverce Then
-                query = labels.Where(Function(item) item.Location.X <= target.Location.X AndAlso item.Location.Y <= target.Location.Y)
+                query = labels.Where(Function(item) item.Location.X < target.Location.X AndAlso item.Location.Y <= target.Location.Y)
             Else
-                query = labels.Where(Function(item) item.Location.X >= target.Location.X AndAlso item.Location.Y <= target.Location.Y)
+                query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y <= target.Location.Y)
+            End If
+            If Not query.Any() Then
+                If isReverce Then
+                    query = labels.Where(Function(item) item.Location.X < target.Location.X)
+                Else
+                    query = labels.Where(Function(item) item.Location.X > target.Location.X)
+                End If
             End If
             If Not query.Any() Then
                 query = labels.Where(Function(item) True)
