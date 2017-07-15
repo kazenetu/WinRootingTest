@@ -107,10 +107,6 @@
         If pt.X > minX + (maxX - minX) / 2 Then
             isReverse = True
         End If
-        ' 開始が上部にある場合は設定
-        If pt.Y < minY Then
-            rootings.Add(startLabel)
-        End If
         For Each keyValue In labels
             Dim target = keyValue.Value.OrderBy(Function(item) item.Key).ToList()
             If isReverse Then
@@ -122,6 +118,7 @@
             Next
             isReverse = Not isReverse
         Next
+        rootings.Insert(0, startLabel)
 
 
         ' ルーティングパスのクリア
