@@ -53,9 +53,15 @@
         target.Top = CInt((target.Top + e.Location.Y - basePoint.Y) / 50) * 50
     End Sub
 
+    ''' <summary>
+    ''' ルーティング設定
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub showRooting_Click(sender As Object, e As EventArgs) Handles showRooting.Click
         Dim startLabel As Label = Label1
 
+        ' アイテム追加
         Dim labels As New SortedList(Of Integer, SortedList(Of Integer, Label))
         For Each item As Control In Me.Controls
             If TypeOf item Is Label AndAlso Not item Is Label1 Then
