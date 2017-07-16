@@ -134,6 +134,173 @@
     End Function
 
     ''' <summary>
+    ''' 描画ラインを生成、取得する
+    ''' </summary>
+    ''' <param name="rootList">アイテムの経路</param>
+    ''' <returns>描画対象リスト</returns>
+    Private Function createLines(ByVal rootList As List(Of Label)) As List(Of List(Of Point))
+        Dim result As New List(Of List(Of Point))
+
+        Dim centerPos As New Point(rootList(0).Width / 2, rootList(0).Height / 2)
+        Dim spaceSize As Integer = 10
+
+        Dim isRight As Boolean = False
+
+        Dim targetPos As Point = Nothing
+        Dim nextPos As Point = Nothing
+        Dim targetLinePos As Point = Nothing
+
+        ' 開始を作成
+        result.Add(Me.createLineStart(rootList, spaceSize, isRight))
+
+        ' 中継点を作成
+        For index As Integer = 1 To rootList.Count - 2
+            Dim listItem As New List(Of Point)
+
+            targetPos = rootList(index).Location + centerPos
+            nextPos = rootList(index + 1).Location + centerPos
+
+            Dim beforePos = rootList(index - 1).Location + centerPos
+            Dim rad1 = Math.Atan2(targetPos.Y - nextPos.Y, targetPos.X - nextPos.X)
+            If rad1 < 0 Then
+                rad1 += 2 * Math.PI
+            End If
+            Dim rad2 = Math.Atan2(beforePos.Y - targetPos.Y, beforePos.X - targetPos.X)
+            If rad2 < 0 Then
+                rad2 += 2 * Math.PI
+            End If
+            Dim rad = rad1 - rad2
+            If rad < 0 Then
+                rad += 2 * Math.PI
+            End If
+
+            Debug.Write(index)
+            Debug.Write(":")
+            Debug.WriteLine(rad * 180 / Math.PI)
+
+            ' 描画開始位置のデフォルト(アイコン上部からスタート)
+            targetLinePos = targetPos
+            targetLinePos.Y -= centerPos.Y
+            listItem.Add(targetLinePos)
+
+            Dim targetDir As Point = targetPos - nextPos
+
+            ' 斜め線を追加
+            Dim addX = spaceSize
+            If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
+                If targetDir.X >= 0 Then
+                    addX *= -1
+                End If
+            Else
+                Dim rect As New Rectangle()
+                If targetPos.X < nextPos.X Then
+                    rect.X = targetPos.X - centerPos.X
+                    rect.Width = nextPos.X - targetPos.X + centerPos.X
+                Else
+                    rect.X = nextPos.X - centerPos.X
+                    rect.Width = targetPos.X - nextPos.X + centerPos.X
+                End If
+                If targetPos.Y < nextPos.Y Then
+                    rect.Y = targetPos.Y - centerPos.Y
+                    rect.Height = nextPos.Y - targetPos.Y + centerPos.Y
+                Else
+                    rect.Y = nextPos.Y - centerPos.Y
+                    rect.Height = targetPos.Y - nextPos.Y + centerPos.Y
+                End If
+                Dim query = rootList.Where(Function(item) rect.IntersectsWith(New Rectangle(item.Location.X, item.Location.Y, 1, 1)))
+                If query.Count <= 2 Then
+                    If targetDir.X >= 0 And targetDir.Y < 0 Then
+                        If Not isRight Then
+                            addX *= -1
+                        End If
+                    End If
+                Else
+                    If targetDir.X < 0 And targetDir.Y < 0 Then
+                        If Not isRight Then
+                            addX *= -1
+                        End If
+                    End If
+                End If
+
+
+                'If targetDir.X < 0 Then
+                '    If Not isRight Then
+                '        addX *= -1
+                '    End If
+                'Else
+                '    If isRight Then
+                '        addX *= -1
+                '    End If
+                'End If
+            End If
+            targetLinePos.X += addX
+            targetLinePos.Y -= spaceSize
+            listItem.Add(targetLinePos)
+            isRight = targetDir.X < 0
+
+            ' 直線を描画
+            If targetDir.Y = 0 Then
+                'targetLinePos.X = nextPos.X
+                'listItem.Add(targetLinePos)
+                'targetLinePos.Y += spaceSize
+                'listItem.Add(targetLinePos)
+            End If
+
+            result.Add(listItem)
+        Next
+        Debug.WriteLine("")
+
+        Return result
+    End Function
+
+    Private Function createLineStart(ByVal rootList As List(Of Label), ByVal spaceSize As Integer, ByRef isRight As Boolean) As List(Of Point)
+        Dim result As New List(Of Point)
+        Dim centerPos As New Point(rootList(0).Width / 2, rootList(0).Height / 2)
+
+        Dim targetPos As Point = rootList(0).Location + centerPos
+        Dim nextPos As Point = rootList(1).Location + centerPos
+        Dim targetLinePos As Point = Nothing
+
+        ' 描画開始位置のデフォルト(アイコン上部からスタート)
+        targetLinePos = targetPos
+        targetLinePos.Y -= centerPos.Y
+
+        Dim targetDir As Point = targetPos - nextPos
+
+        If targetDir.X < 0 Then
+            isRight = True
+        End If
+        If targetDir.Y < 0 Then
+            ' 次のアイコンが下にある場合、アイコン下部から開始
+            targetLinePos.Y += centerPos.Y * 2
+        End If
+        result.Add(targetLinePos)
+
+        ' 斜め線を追加
+        Dim addX = spaceSize
+        If targetDir.Y = 0 Then
+            If targetDir.X > 0 Then
+                addX *= -1
+            End If
+        Else
+            If targetDir.X > 0 Then
+                addX *= -1
+            End If
+        End If
+        targetLinePos.X += addX
+        If targetDir.Y < 0 Then
+            ' アイコン下部から開始
+            targetLinePos.Y += spaceSize
+        Else
+            targetLinePos.Y -= spaceSize
+        End If
+        result.Add(targetLinePos)
+
+        Return result
+    End Function
+
+
+    ''' <summary>
     ''' 二点の距離を計算・取得する
     ''' </summary>
     ''' <param name="srcFrom">対象位置From</param>
@@ -173,6 +340,20 @@
                 gr.DrawLine(p, ptStart, ptEnd)
 
                 ptStart = ptEnd
+            Next
+
+            Dim pg As New Pen(Color.LawnGreen, 2)
+            Dim lines = Me.createLines(rootings)
+
+            For Each items In lines
+                ptStart = items(0)
+                For i As Integer = 1 To items.LongCount - 1
+                    ptEnd = items(i)
+
+                    gr.DrawLine(pg, ptStart, ptEnd)
+
+                    ptStart = ptEnd
+                Next
             Next
 
         End Using
