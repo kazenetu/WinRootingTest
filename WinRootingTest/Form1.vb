@@ -74,17 +74,17 @@
         ' 上段の左端と右端を取得する
         Dim minY As Integer = labels.Min(Function(item) item.Location.Y)
         Dim upperLineQuery = labels.Where(Function(item) item.Location.Y = minY)
-        Dim minX As Integer = upperLineQuery.Min(Function(i) i.Location.X)
-        Dim maxX As Integer = upperLineQuery.Max(Function(i) i.Location.X)
+        Dim leftX As Integer = upperLineQuery.Min(Function(i) i.Location.X)
+        Dim rightX As Integer = upperLineQuery.Max(Function(i) i.Location.X)
 
-        ' 対象のラベルを選択する
+        ' 最初に選択されるラベルを取得する
         Dim isReverce As Boolean = False
         Dim targetX As Integer
-        If startLabel.Location.X > minX + (maxX - minX) / 2 Then
-            targetX = maxX
+        If startLabel.Location.X > leftX + (rightX - leftX) / 2 Then
+            targetX = rightX
             isReverce = True
         Else
-            targetX = minX
+            targetX = leftX
         End If
         Dim target As Label = upperLineQuery.Where(Function(item) item.Location.X = targetX).First()
 
@@ -96,16 +96,20 @@
         result.Add(target)
         labels.Remove(target)
 
-        ' 経路選択
+        ' 2つ目以降の経路選択
         While (labels.LongCount > 0)
 
-            Dim query = labels.Where(Function(item) True)
+            Dim query As IEnumerable(Of Label) = Nothing
+
+            ' 優先度1. 選択オブジェクトと比較して「左または右で上または同じ位置のオブジェクト」を探す
             If isReverce Then
                 query = labels.Where(Function(item) item.Location.X < target.Location.X AndAlso item.Location.Y <= target.Location.Y)
             Else
                 query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y <= target.Location.Y)
             End If
+
             If Not query.Any() Then
+                ' 優先度2. 選択オブジェクトと比較して「左または右のオブジェクト」を探す
                 If isReverce Then
                     query = labels.Where(Function(item) item.Location.X < target.Location.X)
                 Else
@@ -113,9 +117,11 @@
                 End If
             End If
             If Not query.Any() Then
+                ' 優先度3. すべてのオブジェクトを対象とする
                 query = labels.Where(Function(item) True)
             End If
 
+            ' 絞り込んだ条件から一番近いオブジェクトを次の移動先オブジェクトとして選択する
             target = query.OrderBy(Function(item) getDistance(item.Location, target.Location)).First()
 
             ' 戻り値リストの追加と追加対象リストの削除
@@ -127,6 +133,12 @@
         Return result
     End Function
 
+    ''' <summary>
+    ''' 二点の距離を計算・取得する
+    ''' </summary>
+    ''' <param name="srcPos">対象位置From</param>
+    ''' <param name="descPos">対象位置To</param>
+    ''' <returns></returns>
     Private Function getDistance(ByVal srcPos As Point, ByVal descPos As Point) As Double
         Dim targetPos As Point = srcPos - descPos
         Return Math.Sqrt((targetPos.X * targetPos.X) + (targetPos.Y * targetPos.Y))
