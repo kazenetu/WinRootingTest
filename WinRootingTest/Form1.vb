@@ -136,11 +136,11 @@
     ''' <summary>
     ''' 二点の距離を計算・取得する
     ''' </summary>
-    ''' <param name="srcPos">対象位置From</param>
-    ''' <param name="descPos">対象位置To</param>
+    ''' <param name="srcFrom">対象位置From</param>
+    ''' <param name="srcTo">対象位置To</param>
     ''' <returns></returns>
-    Private Function getDistance(ByVal srcPos As Point, ByVal descPos As Point) As Double
-        Dim targetPos As Point = srcPos - descPos
+    Private Function getDistance(ByVal srcFrom As Point, ByVal srcTo As Point) As Double
+        Dim targetPos As Point = srcFrom - srcTo
         Return Math.Sqrt((targetPos.X * targetPos.X) + (targetPos.Y * targetPos.Y))
     End Function
 
