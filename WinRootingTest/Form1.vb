@@ -209,7 +209,7 @@
                 End If
                 Dim query = rootList.Where(Function(item) rect.IntersectsWith(New Rectangle(item.Location.X, item.Location.Y, 1, 1)))
                 If query.Count <= 2 Then
-                    If targetDir.X >= 0 And targetDir.Y < 0 Then
+                    If targetDir.Y < 0 Then
                         If Not isRight Then
                             addX *= -1
                         End If
@@ -221,30 +221,28 @@
                         End If
                     End If
                 End If
-
-
-                'If targetDir.X < 0 Then
-                '    If Not isRight Then
-                '        addX *= -1
-                '    End If
-                'Else
-                '    If isRight Then
-                '        addX *= -1
-                '    End If
-                'End If
             End If
             targetLinePos.X += addX
             targetLinePos.Y -= spaceSize
             listItem.Add(targetLinePos)
             isRight = targetDir.X < 0
 
-            ' 直線を描画
-            If targetDir.Y = 0 Then
-                'targetLinePos.X = nextPos.X
-                'listItem.Add(targetLinePos)
-                'targetLinePos.Y += spaceSize
-                'listItem.Add(targetLinePos)
+            ' 次のアイテムまでの線を描画
+            If Not targetDir.Y = 0 Then
+                Dim lineX = centerPos.X * 3
+                If addX < 0 Then
+                    lineX *= -1
+                End If
+                targetLinePos.X += lineX
+                listItem.Add(targetLinePos)
+
+                targetLinePos.Y += targetDir.Y * -1
+                listItem.Add(targetLinePos)
             End If
+            targetLinePos.X = nextPos.X
+            listItem.Add(targetLinePos)
+            targetLinePos.Y += spaceSize
+            listItem.Add(targetLinePos)
 
             result.Add(listItem)
         Next
