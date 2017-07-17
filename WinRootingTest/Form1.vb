@@ -152,6 +152,7 @@
 
         ' 開始を作成
         result.Add(Me.createLineStart(rootList, spaceSize, isRight))
+        Dim isRightStart As Boolean = isRight
 
         ' 中継点を作成
         For index As Integer = 1 To rootList.Count - 2
@@ -187,41 +188,69 @@
 
             ' 斜め線を追加
             Dim addX = spaceSize
-            If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
-                If targetDir.X >= 0 Then
-                    addX *= -1
-                End If
-            Else
-                Dim rect As New Rectangle()
-                If targetPos.X < nextPos.X Then
-                    rect.X = targetPos.X - centerPos.X
-                    rect.Width = nextPos.X - targetPos.X + centerPos.X
-                Else
-                    rect.X = nextPos.X - centerPos.X
-                    rect.Width = targetPos.X - nextPos.X + centerPos.X
-                End If
-                If targetPos.Y < nextPos.Y Then
-                    rect.Y = targetPos.Y - centerPos.Y
-                    rect.Height = nextPos.Y - targetPos.Y + centerPos.Y
-                Else
-                    rect.Y = nextPos.Y - centerPos.Y
-                    rect.Height = targetPos.Y - nextPos.Y + centerPos.Y
-                End If
-                Dim query = rootList.Where(Function(item) rect.IntersectsWith(New Rectangle(item.Location.X, item.Location.Y, 1, 1)))
-                If query.Count <= 2 Then
-                    If targetDir.Y < 0 Then
-                        If Not isRight Then
+            If Not isRightStart Then
+                addX *= -1
+            End If
+            If isRightStart Then
+                If targetDir.X > 0 Then
+                    If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
+                        addX *= -1
+                    Else
+                        If isRight <> isRightStart Then
                             addX *= -1
                         End If
                     End If
-                Else
-                    If targetDir.X < 0 And targetDir.Y < 0 Then
-                        If Not isRight Then
+                End If
+            Else
+                If targetDir.X < 0 Then
+                    If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
+                        addX *= -1
+                    Else
+                        If isRight <> isRightStart Then
                             addX *= -1
                         End If
                     End If
                 End If
             End If
+
+
+            'If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
+            '    If targetDir.X < 0 And Not isRightStart = isRight Then
+            '        If Not isRight Then
+            '            addX *= -1
+            '        End If
+            '    End If
+            'Else
+            '    Dim rect As New Rectangle()
+            '    If targetPos.X < nextPos.X Then
+            '        rect.X = targetPos.X - centerPos.X
+            '        rect.Width = nextPos.X - targetPos.X + centerPos.X
+            '    Else
+            '        rect.X = nextPos.X - centerPos.X
+            '        rect.Width = targetPos.X - nextPos.X + centerPos.X
+            '    End If
+            '    If targetPos.Y < nextPos.Y Then
+            '        rect.Y = targetPos.Y - centerPos.Y
+            '        rect.Height = nextPos.Y - targetPos.Y + centerPos.Y
+            '    Else
+            '        rect.Y = nextPos.Y - centerPos.Y
+            '        rect.Height = targetPos.Y - nextPos.Y + centerPos.Y
+            '    End If
+            '    Dim query = rootList.Where(Function(item) rect.IntersectsWith(New Rectangle(item.Location.X, item.Location.Y, 1, 1)))
+            '    If query.Count <= 2 Then
+            '        If targetDir.X < 0 And Not isRightStart = isRight Then
+            '            If Not isRight Then
+            '                addX *= -1
+            '            End If
+            '        End If
+            '    Else
+            '        If targetDir.X < 0 And Not isRightStart = isRight Then
+            '            If Not isRight Then
+            '                addX *= -1
+            '            End If
+            '        End If
+            '    End If
+            'End If
             targetLinePos.X += addX
             targetLinePos.Y -= spaceSize
             listItem.Add(targetLinePos)
@@ -229,18 +258,26 @@
 
             ' 次のアイテムまでの線を描画
             If Not targetDir.Y = 0 Then
-                Dim lineX = centerPos.X * 3
+                ' 横線を描画
+                Dim lineX As Integer = centerPos.X * 2
+                If targetDir.Y > 0 Then
+                    ' 下から上へ
+                    lineX = centerPos.X * 1
+                End If
                 If addX < 0 Then
                     lineX *= -1
                 End If
                 targetLinePos.X += lineX
                 listItem.Add(targetLinePos)
 
+                ' 縦線を描画
                 targetLinePos.Y += targetDir.Y * -1
                 listItem.Add(targetLinePos)
             End If
+            ' 次のアイテムまでの横線を描画
             targetLinePos.X = nextPos.X
             listItem.Add(targetLinePos)
+            ' 短い縦線を描画
             targetLinePos.Y += spaceSize
             listItem.Add(targetLinePos)
 
