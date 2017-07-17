@@ -331,6 +331,19 @@
         End If
         result.Add(targetLinePos)
 
+        ' 次のアイテムまでの線を描画
+        If Not targetDir.Y = 0 Then
+            ' 縦線を描画
+            targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+            result.Add(targetLinePos)
+        End If
+        ' 次のアイテムまでの横線を描画
+        targetLinePos.X = nextPos.X
+        result.Add(targetLinePos)
+        ' 短い縦線を描画
+        targetLinePos.Y += spaceSize
+        result.Add(targetLinePos)
+
         Return result
     End Function
 
