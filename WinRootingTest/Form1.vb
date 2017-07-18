@@ -161,24 +161,6 @@
             targetPos = rootList(index).Location + centerPos
             nextPos = rootList(index + 1).Location + centerPos
 
-            Dim beforePos = rootList(index - 1).Location + centerPos
-            Dim rad1 = Math.Atan2(targetPos.Y - nextPos.Y, targetPos.X - nextPos.X)
-            If rad1 < 0 Then
-                rad1 += 2 * Math.PI
-            End If
-            Dim rad2 = Math.Atan2(beforePos.Y - targetPos.Y, beforePos.X - targetPos.X)
-            If rad2 < 0 Then
-                rad2 += 2 * Math.PI
-            End If
-            Dim rad = rad1 - rad2
-            If rad < 0 Then
-                rad += 2 * Math.PI
-            End If
-
-            Debug.Write(index)
-            Debug.Write(":")
-            Debug.WriteLine(rad * 180 / Math.PI)
-
             ' 描画開始位置のデフォルト(アイコン上部からスタート)
             targetLinePos = targetPos
             targetLinePos.Y -= centerPos.Y
@@ -213,44 +195,6 @@
                 End If
             End If
 
-
-            'If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
-            '    If targetDir.X < 0 And Not isRightStart = isRight Then
-            '        If Not isRight Then
-            '            addX *= -1
-            '        End If
-            '    End If
-            'Else
-            '    Dim rect As New Rectangle()
-            '    If targetPos.X < nextPos.X Then
-            '        rect.X = targetPos.X - centerPos.X
-            '        rect.Width = nextPos.X - targetPos.X + centerPos.X
-            '    Else
-            '        rect.X = nextPos.X - centerPos.X
-            '        rect.Width = targetPos.X - nextPos.X + centerPos.X
-            '    End If
-            '    If targetPos.Y < nextPos.Y Then
-            '        rect.Y = targetPos.Y - centerPos.Y
-            '        rect.Height = nextPos.Y - targetPos.Y + centerPos.Y
-            '    Else
-            '        rect.Y = nextPos.Y - centerPos.Y
-            '        rect.Height = targetPos.Y - nextPos.Y + centerPos.Y
-            '    End If
-            '    Dim query = rootList.Where(Function(item) rect.IntersectsWith(New Rectangle(item.Location.X, item.Location.Y, 1, 1)))
-            '    If query.Count <= 2 Then
-            '        If targetDir.X < 0 And Not isRightStart = isRight Then
-            '            If Not isRight Then
-            '                addX *= -1
-            '            End If
-            '        End If
-            '    Else
-            '        If targetDir.X < 0 And Not isRightStart = isRight Then
-            '            If Not isRight Then
-            '                addX *= -1
-            '            End If
-            '        End If
-            '    End If
-            'End If
             targetLinePos.X += addX
             targetLinePos.Y -= spaceSize
             listItem.Add(targetLinePos)
@@ -283,7 +227,6 @@
 
             result.Add(listItem)
         Next
-        Debug.WriteLine("")
 
         Return result
     End Function
