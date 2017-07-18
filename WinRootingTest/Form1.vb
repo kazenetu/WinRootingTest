@@ -231,6 +231,13 @@
         Return result
     End Function
 
+    ''' <summary>
+    ''' 開始位置から次のアイテムまでの線を描画
+    ''' </summary>
+    ''' <param name="rootList">アイテムの経路</param>
+    ''' <param name="spaceSize">斜め線のサイズ</param>
+    ''' <param name="isRight">右回りか否か</param>
+    ''' <returns>描画対象リスト</returns>
     Private Function createLineStart(ByVal rootList As List(Of Label), ByVal spaceSize As Integer, ByRef isRight As Boolean) As List(Of Point)
         Dim result As New List(Of Point)
         Dim centerPos As New Point(rootList(0).Width / 2, rootList(0).Height / 2)
