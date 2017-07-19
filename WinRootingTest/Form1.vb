@@ -321,7 +321,7 @@
         ' ルーティングリストを取得
         Dim rootings As List(Of Label) = Me.getRootingList()
 
-        'Draw
+        ' 描画処理
         Dim ptStart As Point = rootings(0).Location
         ptStart.X += rootings(0).Width / 2
         ptStart.Y += rootings(0).Height / 2
@@ -330,6 +330,7 @@
         Dim p As New Pen(Color.Black, 3)
         Using gr As Graphics = Me.CreateGraphics()
 
+            ' 経路描画
             For i As Integer = 1 To rootings.LongCount - 1
                 ptEnd = rootings(i).Location
                 ptEnd.X += rootings(i).Width / 2
@@ -340,6 +341,7 @@
                 ptStart = ptEnd
             Next
 
+            ' 描画ライン
             Dim pg As New Pen(Color.LawnGreen, 2)
             Dim lines = Me.createLines(rootings)
 
