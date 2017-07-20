@@ -14,6 +14,8 @@
         setHandler(Label6)
         setHandler(Label7)
         setHandler(Label8)
+        setHandler(Label9)
+        setHandler(Label10)
 
     End Sub
 
@@ -146,6 +148,7 @@
 
         Dim isRight As Boolean = False
 
+        Dim checkedRootList As New List(Of Label)
         Dim targetPos As Point = Nothing
         Dim nextPos As Point = Nothing
         Dim targetLinePos As Point = Nothing
@@ -153,6 +156,7 @@
         ' 開始を作成
         result.Add(Me.createLineStart(rootList, spaceSize, isRight))
         Dim isRightStart As Boolean = isRight
+        checkedRootList.Add(rootList(0))
 
         ' 中継点を作成
         For index As Integer = 1 To rootList.Count - 2
@@ -194,37 +198,49 @@
                     End If
                 End If
             End If
+            If Math.Abs(targetDir.Y) > centerPos.Y * 2 Or True Then
+                Dim targetPoint = rootList(index + 1).Location
+                Dim query = rootList.Where(Function(item) Not checkedRootList.Contains(item) AndAlso item.Location.Y = targetPoint.Y)
+
+                If query.Min(Function(item) item.Location.X) = targetPoint.X Then
+                    addX = -spaceSize
+                End If
+                If query.Max(Function(item) item.Location.X) = targetPoint.X Then
+                    addX = spaceSize
+                End If
+            End If
 
             targetLinePos.X += addX
             targetLinePos.Y -= spaceSize
             listItem.Add(targetLinePos)
             isRight = targetDir.X < 0
 
-            ' 次のアイテムまでの線を描画
-            If Not targetDir.Y = 0 Then
-                ' 横線を描画
-                Dim lineX As Integer = centerPos.X * 2
-                If targetDir.Y > 0 Then
-                    ' 下から上へ
-                    lineX = centerPos.X * 1
-                End If
-                If addX < 0 Then
-                    lineX *= -1
-                End If
-                targetLinePos.X += lineX
-                listItem.Add(targetLinePos)
+            '' 次のアイテムまでの線を描画
+            'If Not targetDir.Y = 0 Then
+            '    ' 横線を描画
+            '    Dim lineX As Integer = centerPos.X * 2
+            '    If targetDir.Y > 0 Then
+            '        ' 下から上へ
+            '        lineX = centerPos.X * 1
+            '    End If
+            '    If addX < 0 Then
+            '        lineX *= -1
+            '    End If
+            '    targetLinePos.X += lineX
+            '    listItem.Add(targetLinePos)
 
-                ' 縦線を描画
-                targetLinePos.Y += targetDir.Y * -1
-                listItem.Add(targetLinePos)
-            End If
-            ' 次のアイテムまでの横線を描画
-            targetLinePos.X = nextPos.X
-            listItem.Add(targetLinePos)
-            ' 短い縦線を描画
-            targetLinePos.Y += spaceSize
-            listItem.Add(targetLinePos)
+            '    ' 縦線を描画
+            '    targetLinePos.Y += targetDir.Y * -1
+            '    listItem.Add(targetLinePos)
+            'End If
+            '' 次のアイテムまでの横線を描画
+            'targetLinePos.X = nextPos.X
+            'listItem.Add(targetLinePos)
+            '' 短い縦線を描画
+            'targetLinePos.Y += spaceSize
+            'listItem.Add(targetLinePos)
 
+            checkedRootList.Add(rootList(index))
             result.Add(listItem)
         Next
 
@@ -254,8 +270,10 @@
 
         If targetDir.X < 0 Then
             isRight = True
+        Else
+            isRight = False
         End If
-        If targetDir.Y < 0 Then
+        If targetDir.Y < 0 Or True Then
             ' 次のアイコンが下にある場合、アイコン下部から開始
             targetLinePos.Y += centerPos.Y * 2
         End If
@@ -273,7 +291,7 @@
             End If
         End If
         targetLinePos.X += addX
-        If targetDir.Y < 0 Then
+        If targetDir.Y < 0 Or True Then
             ' アイコン下部から開始
             targetLinePos.Y += spaceSize
         Else
@@ -283,9 +301,23 @@
 
         ' 次のアイテムまでの線を描画
         If Not targetDir.Y = 0 Then
-            ' 縦線を描画
-            targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-            result.Add(targetLinePos)
+            If targetDir.Y > 0 Then
+                ' 横線を描画
+                Dim lineX As Integer = centerPos.X * 2
+                If addX > 0 Then
+                    lineX *= -1
+                End If
+                targetLinePos.X += lineX
+                result.Add(targetLinePos)
+
+                ' 縦線を描画
+                targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                result.Add(targetLinePos)
+            Else
+                ' 縦線を描画
+                targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                result.Add(targetLinePos)
+            End If
         End If
         ' 次のアイテムまでの横線を描画
         targetLinePos.X = nextPos.X
