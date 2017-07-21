@@ -103,7 +103,7 @@
 
             Dim query As IEnumerable(Of Label) = Nothing
 
-            ' 優先度1. 選択オブジェクトと比較して「左または右で上または同じ位置のオブジェクト」を探す
+            ' 優先度1. 選択オブジェクトと比較して「左または右で上または同じ位置のオブジェクト」を探す（横方向）
             If isReverce Then
                 query = labels.Where(Function(item) item.Location.X < target.Location.X AndAlso item.Location.Y <= target.Location.Y)
             Else
@@ -111,15 +111,35 @@
             End If
 
             If Not query.Any() Then
-                ' 優先度2. 選択オブジェクトと比較して「左または右のオブジェクト」を探す
-                If isReverce Then
-                    query = labels.Where(Function(item) item.Location.X < target.Location.X)
+                ' 優先度2. 選択オブジェクトと比較して「優先度1の逆方向のオブジェクト」を探す（横方向）
+                If Not isReverce Then
+                    query = labels.Where(Function(item) item.Location.X < target.Location.X AndAlso item.Location.Y <= target.Location.Y)
                 Else
-                    query = labels.Where(Function(item) item.Location.X > target.Location.X)
+                    query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y <= target.Location.Y)
                 End If
             End If
+
             If Not query.Any() Then
-                ' 優先度3. すべてのオブジェクトを対象とする
+                ' 優先度3. 選択オブジェクトと比較して「左または右で下の位置のオブジェクト」を探す（縦方向）
+                If isReverce Then
+                    query = labels.Where(Function(item) item.Location.X <= target.Location.X AndAlso item.Location.Y > target.Location.Y)
+                Else
+                    query = labels.Where(Function(item) item.Location.X >= target.Location.X AndAlso item.Location.Y > target.Location.Y)
+                End If
+            End If
+
+            If Not query.Any() Then
+                ' 優先度4. 選択オブジェクトと比較して「優先度3の逆方向のオブジェクト」を探す（縦方向）
+                If Not isReverce Then
+                    query = labels.Where(Function(item) item.Location.X <= target.Location.X AndAlso item.Location.Y > target.Location.Y)
+                Else
+                    query = labels.Where(Function(item) item.Location.X >= target.Location.X AndAlso item.Location.Y > target.Location.Y)
+                End If
+            End If
+
+
+            If Not query.Any() Then
+                ' 優先度5. すべてのオブジェクトを対象とする
                 query = labels.Where(Function(item) True)
             End If
 
