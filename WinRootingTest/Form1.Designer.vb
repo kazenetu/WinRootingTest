@@ -33,6 +33,7 @@ Partial Class Form1
         Me.showRooting = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
+        Me.drawGreen = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Label1
@@ -164,11 +165,24 @@ Partial Class Form1
         Me.Label10.Text = "中継点"
         Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'drawGreen
+        '
+        Me.drawGreen.AutoSize = True
+        Me.drawGreen.Checked = True
+        Me.drawGreen.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.drawGreen.Location = New System.Drawing.Point(538, 54)
+        Me.drawGreen.Name = "drawGreen"
+        Me.drawGreen.Size = New System.Drawing.Size(81, 16)
+        Me.drawGreen.TabIndex = 8
+        Me.drawGreen.Text = "緑線を表示"
+        Me.drawGreen.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(702, 447)
+        Me.Controls.Add(Me.drawGreen)
         Me.Controls.Add(Me.showRooting)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label7)
@@ -183,6 +197,7 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents Label1 As Label
@@ -196,4 +211,5 @@ Partial Class Form1
     Friend WithEvents showRooting As Button
     Friend WithEvents Label9 As Label
     Friend WithEvents Label10 As Label
+    Friend WithEvents drawGreen As CheckBox
 End Class

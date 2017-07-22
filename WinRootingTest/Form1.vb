@@ -235,30 +235,33 @@
             listItem.Add(targetLinePos)
             isRight = targetDir.X < 0
 
-            ' 次のアイテムまでの線を描画
-            If Not targetDir.Y = 0 Then
-                ' 横線を描画
-                Dim lineX As Integer = centerPos.X * 2
-                If targetDir.Y > 0 Then
-                    ' 下から上へ
-                    lineX = centerPos.X * 1
-                End If
-                If addX < 0 Then
-                    lineX *= -1
-                End If
-                targetLinePos.X += lineX
-                listItem.Add(targetLinePos)
+            ' 「緑線を表示」にチェックされていれば表示
+            If Me.drawGreen.Checked Then
+                ' 次のアイテムまでの線を描画
+                If Not targetDir.Y = 0 Then
+                    ' 横線を描画
+                    Dim lineX As Integer = centerPos.X * 2
+                    If targetDir.Y > 0 Then
+                        ' 下から上へ
+                        lineX = centerPos.X * 1
+                    End If
+                    If addX < 0 Then
+                        lineX *= -1
+                    End If
+                    targetLinePos.X += lineX
+                    listItem.Add(targetLinePos)
 
-                ' 縦線を描画
-                targetLinePos.Y += targetDir.Y * -1
+                    ' 縦線を描画
+                    targetLinePos.Y += targetDir.Y * -1
+                    listItem.Add(targetLinePos)
+                End If
+                ' 次のアイテムまでの横線を描画
+                targetLinePos.X = nextPos.X
+                listItem.Add(targetLinePos)
+                ' 短い縦線を描画
+                targetLinePos.Y += spaceSize
                 listItem.Add(targetLinePos)
             End If
-            ' 次のアイテムまでの横線を描画
-            targetLinePos.X = nextPos.X
-            listItem.Add(targetLinePos)
-            ' 短い縦線を描画
-            targetLinePos.Y += spaceSize
-            listItem.Add(targetLinePos)
 
             checkedRootList.Add(rootList(index))
             result.Add(listItem)
@@ -319,32 +322,35 @@
         End If
         result.Add(targetLinePos)
 
-        ' 次のアイテムまでの線を描画
-        If Not targetDir.Y = 0 Then
-            If targetDir.Y > 0 Then
-                ' 横線を描画
-                Dim lineX As Integer = centerPos.X * 2
-                If addX > 0 Then
-                    lineX *= -1
-                End If
-                targetLinePos.X += lineX
-                result.Add(targetLinePos)
+        ' 「緑線を表示」にチェックされていれば表示
+        If Me.drawGreen.Checked Then
+            ' 次のアイテムまでの線を描画
+            If Not targetDir.Y = 0 Then
+                If targetDir.Y > 0 Then
+                    ' 横線を描画
+                    Dim lineX As Integer = centerPos.X * 2
+                    If addX > 0 Then
+                        lineX *= -1
+                    End If
+                    targetLinePos.X += lineX
+                    result.Add(targetLinePos)
 
-                ' 縦線を描画
-                targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                result.Add(targetLinePos)
-            Else
-                ' 縦線を描画
-                targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                result.Add(targetLinePos)
+                    ' 縦線を描画
+                    targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                    result.Add(targetLinePos)
+                Else
+                    ' 縦線を描画
+                    targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                    result.Add(targetLinePos)
+                End If
             End If
+            ' 次のアイテムまでの横線を描画
+            targetLinePos.X = nextPos.X
+            result.Add(targetLinePos)
+            ' 短い縦線を描画
+            targetLinePos.Y += spaceSize
+            result.Add(targetLinePos)
         End If
-        ' 次のアイテムまでの横線を描画
-        targetLinePos.X = nextPos.X
-        result.Add(targetLinePos)
-        ' 短い縦線を描画
-        targetLinePos.Y += spaceSize
-        result.Add(targetLinePos)
 
         Return result
     End Function
