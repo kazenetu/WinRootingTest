@@ -218,14 +218,13 @@
                     End If
                 End If
             End If
-            If Math.Abs(targetDir.Y) > centerPos.Y * 2 Or True Then
-                Dim targetPoint = rootList(index + 1).Location
-                Dim query = rootList.Where(Function(item) Not checkedRootList.Contains(item) AndAlso item.Location.Y = targetPoint.Y)
+            If Math.Abs(targetDir.Y) > centerPos.Y * 2 Then
+                Dim targetPoint = rootList(index).Location
+                Dim query = rootList.Where(Function(item) item.Location.Y = targetPoint.Y)
 
                 If query.Min(Function(item) item.Location.X) = targetPoint.X Then
                     addX = -spaceSize
-                End If
-                If query.Max(Function(item) item.Location.X) = targetPoint.X Then
+                ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
                     addX = spaceSize
                 End If
             End If
@@ -313,6 +312,25 @@
                 addX *= -1
             End If
         End If
+        If Math.Abs(targetDir.Y) > centerPos.Y * 2 Then
+            Dim targetPoint As Point = rootList(0).Location
+            Dim nextPoint As Point = rootList(1).Location
+            Dim query = rootList.Where(Function(item) item.Location.Y = targetPoint.Y)
+            Dim queryNext = rootList.Where(Function(item) item.Location.Y = nextPoint.Y)
+
+            If query.Min(Function(item) item.Location.X) = targetPoint.X Then
+                addX = spaceSize
+                If queryNext.Max(Function(item) item.Location.X) = nextPoint.X Then
+                    addX *= -1
+                End If
+            ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
+                addX = -spaceSize
+                If queryNext.Min(Function(item) item.Location.X) = nextPoint.X Then
+                    addX *= -1
+                End If
+            End If
+        End If
+
         targetLinePos.X += addX
         If targetDir.Y < 0 Or True Then
             ' アイコン下部から開始
@@ -325,14 +343,33 @@
         ' 「緑線を表示」にチェックされていれば表示
         If Me.drawGreen.Checked Then
             ' 次のアイテムまでの線を描画
-            If Not targetDir.Y = 0 Then
-                If targetDir.Y > 0 Then
+            If Not targetDir.Y = 0 Or True Then
+                Dim lineX As Integer
+                If targetDir.Y >= 0 Then
+                    If Not targetDir.X = 0 Then
+                        ' 横線を描画
+                        lineX = centerPos.X * 2
+                        If addX > 0 Then
+                            lineX *= -1
+                        End If
+                        targetLinePos.X = targetPos.X + lineX
+                        result.Add(targetLinePos)
+                    End If
+
                     ' 横線を描画
-                    Dim lineX As Integer = centerPos.X * 2
+                    lineX = centerPos.X * 2
                     If addX > 0 Then
                         lineX *= -1
                     End If
-                    targetLinePos.X += lineX
+                    If addX < 0 Then
+                        If nextPos.X > targetPos.X Then
+                            targetLinePos.X = nextPos.X + lineX
+                        End If
+                    Else
+                        If nextPos.X < targetPos.X Then
+                            targetLinePos.X = targetPos.X + lineX
+                        End If
+                    End If
                     result.Add(targetLinePos)
 
                     ' 縦線を描画
@@ -344,6 +381,7 @@
                     result.Add(targetLinePos)
                 End If
             End If
+
             ' 次のアイテムまでの横線を描画
             targetLinePos.X = nextPos.X
             result.Add(targetLinePos)
