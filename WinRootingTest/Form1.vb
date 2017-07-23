@@ -219,13 +219,23 @@
                 End If
             End If
             If Math.Abs(targetDir.Y) > centerPos.Y * 2 Then
-                Dim targetPoint = rootList(index).Location
-                Dim query = rootList.Where(Function(item) item.Location.Y = targetPoint.Y)
+                If Not targetDir.X = 0 Or True Then
+                    Dim targetPoint As Point = rootList(index).Location
+                    Dim nextPoint As Point = rootList(index + 1).Location
+                    Dim query = rootList.Where(Function(item) item.Location.Y = targetPoint.Y)
+                    Dim queryNext = rootList.Where(Function(item) item.Location.Y = nextPoint.Y)
 
-                If query.Min(Function(item) item.Location.X) = targetPoint.X Then
-                    addX = -spaceSize
-                ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
-                    addX = spaceSize
+                    If query.Min(Function(item) item.Location.X) = targetPoint.X Then
+                        addX = -spaceSize
+                        If queryNext.Max(Function(item) item.Location.X) = nextPoint.X Then
+                            addX *= -1
+                        End If
+                    ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
+                        addX = spaceSize
+                        If queryNext.Min(Function(item) item.Location.X) = nextPoint.X Then
+                            addX *= -1
+                        End If
+                    End If
                 End If
             End If
 
