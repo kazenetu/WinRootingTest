@@ -215,11 +215,18 @@
                     addX = -spaceSize
                     If queryNext.Max(Function(item) item.Location.X) = nextPoint.X Then
                         addX *= -1
+                        If targetDir.Y > 0 Then
+                            addX *= -1
+                        End If
                     End If
-                ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
+                End If
+                If query.Max(Function(item) item.Location.X) = targetPoint.X Then
                     addX = spaceSize
                     If queryNext.Min(Function(item) item.Location.X) = nextPoint.X Then
                         addX *= -1
+                        If targetDir.Y > 0 Then
+                            addX *= -1
+                        End If
                     End If
                 End If
             End If
