@@ -194,47 +194,32 @@
 
             ' 斜め線を追加
             Dim addX = spaceSize
-            If Not isRightStart Then
-                addX *= -1
-            End If
-            If isRightStart Then
-                If targetDir.X > 0 Then
-                    If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
+            If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
+                If isRightStart Then
+                    If targetDir.X > 0 Then
                         addX *= -1
-                    Else
-                        If isRight <> isRightStart Then
-                            addX *= -1
-                        End If
+                    End If
+                Else
+                    addX *= -1
+                    If targetDir.X < 0 Then
+                        addX *= -1
                     End If
                 End If
             Else
-                If targetDir.X < 0 Then
-                    If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
-                        addX *= -1
-                    Else
-                        If isRight <> isRightStart Then
-                            addX *= -1
-                        End If
-                    End If
-                End If
-            End If
-            If Math.Abs(targetDir.Y) > centerPos.Y * 2 Then
-                If Not targetDir.X = 0 Or True Then
-                    Dim targetPoint As Point = rootList(index).Location
-                    Dim nextPoint As Point = rootList(index + 1).Location
-                    Dim query = rootList.Where(Function(item) item.Location.Y = targetPoint.Y)
-                    Dim queryNext = rootList.Where(Function(item) item.Location.Y = nextPoint.Y)
+                Dim targetPoint As Point = rootList(index).Location
+                Dim nextPoint As Point = rootList(index + 1).Location
+                Dim query = rootList.Where(Function(item) item.Location.Y = targetPoint.Y)
+                Dim queryNext = rootList.Where(Function(item) item.Location.Y = nextPoint.Y)
 
-                    If query.Min(Function(item) item.Location.X) = targetPoint.X Then
-                        addX = -spaceSize
-                        If queryNext.Max(Function(item) item.Location.X) = nextPoint.X Then
-                            addX *= -1
-                        End If
-                    ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
-                        addX = spaceSize
-                        If queryNext.Min(Function(item) item.Location.X) = nextPoint.X Then
-                            addX *= -1
-                        End If
+                If query.Min(Function(item) item.Location.X) = targetPoint.X Then
+                    addX = -spaceSize
+                    If queryNext.Max(Function(item) item.Location.X) = nextPoint.X Then
+                        addX *= -1
+                    End If
+                ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
+                    addX = spaceSize
+                    If queryNext.Min(Function(item) item.Location.X) = nextPoint.X Then
+                        addX *= -1
                     End If
                 End If
             End If
@@ -305,10 +290,8 @@
         Else
             isRight = False
         End If
-        If targetDir.Y < 0 Or True Then
-            ' 次のアイコンが下にある場合、アイコン下部から開始
-            targetLinePos.Y += centerPos.Y * 2
-        End If
+        ' 次のアイコンが下にある場合、アイコン下部から開始
+        targetLinePos.Y += centerPos.Y * 2
         result.Add(targetLinePos)
 
         ' 斜め線を追加
