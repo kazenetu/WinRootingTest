@@ -8,14 +8,6 @@
         ' ラベルのイベント設定
         setHandler(Label1)
         setHandler(Label2)
-        setHandler(Label3)
-        setHandler(Label4)
-        setHandler(Label5)
-        setHandler(Label6)
-        setHandler(Label7)
-        setHandler(Label8)
-        setHandler(Label9)
-        setHandler(Label10)
 
     End Sub
 
@@ -26,6 +18,26 @@
     Private Sub setHandler(target As Label)
         AddHandler target.MouseDown, AddressOf Label_MouseDown
         AddHandler target.MouseMove, AddressOf Label_MouseMove
+
+    End Sub
+
+    ''' <summary>
+    ''' ラベルの追加
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub addLabel_Click(sender As Object, e As EventArgs) Handles addLabel.Click
+        Dim newLabel As New Label()
+
+        newLabel.Width = Label2.Width
+        newLabel.Height = Label2.Height
+        newLabel.BackColor = Label2.BackColor
+        newLabel.ForeColor = Label2.ForeColor
+        newLabel.Font = Label2.Font
+        newLabel.Text = Label2.Text
+        setHandler(newLabel)
+
+        Me.Controls.Add(newLabel)
 
     End Sub
 
@@ -473,4 +485,5 @@
             gr.FillRectangle(New SolidBrush(Me.BackColor), New RectangleF(0, 0, Me.Width, Me.Height))
         End Using
     End Sub
+
 End Class
