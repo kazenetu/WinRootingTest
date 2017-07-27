@@ -190,6 +190,7 @@
         Dim isRightStart As Boolean = isRight
         checkedRootList.Add(rootList(0))
 
+        'isRight = Not isRight
         ' 中継点を作成
         For index As Integer = 1 To rootList.Count - 2
             Dim listItem As New List(Of Point)
@@ -207,7 +208,7 @@
             ' 斜め線を追加
             Dim addX = spaceSize
             If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
-                If isRightStart Then
+                If isRight Then
                     If targetDir.X > 0 Then
                         addX *= -1
                     End If
@@ -218,34 +219,18 @@
                     End If
                 End If
             Else
-                Dim targetPoint As Point = rootList(index).Location
-                Dim nextPoint As Point = rootList(index + 1).Location
-                Dim query = rootList.Where(Function(item) item.Location.Y = targetPoint.Y)
-                Dim queryNext = rootList.Where(Function(item) item.Location.Y = nextPoint.Y)
-
-                If query.Min(Function(item) item.Location.X) = targetPoint.X Then
-                    addX = -spaceSize
-                    If queryNext.Count > 1 AndAlso queryNext.Max(Function(item) item.Location.X) = nextPoint.X Then
+                If isRight Then
+                    If targetDir.Y > 0 Then
                         addX *= -1
-                        If targetDir.Y > 0 Then
-                            addX *= -1
-                        End If
                     End If
-                ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
-                    addX = spaceSize
-                    If queryNext.Count > 1 AndAlso queryNext.Min(Function(item) item.Location.X) = nextPoint.X Then
-                        addX *= -1
-                        If targetDir.Y > 0 Then
-                            addX *= -1
-                        End If
-                    End If
+                Else
+                    addX *= -1
                 End If
             End If
 
             targetLinePos.X += addX
             targetLinePos.Y -= spaceSize
             listItem.Add(targetLinePos)
-            isRight = targetDir.X < 0
 
             ' 「緑線を表示」にチェックされていれば表示
             If Me.drawGreen.Checked Then
@@ -267,6 +252,10 @@
                     targetLinePos.Y += targetDir.Y * -1
                     listItem.Add(targetLinePos)
                 End If
+
+                isRight = targetLinePos.X < nextPos.X
+
+
                 ' 次のアイテムまでの横線を描画
                 targetLinePos.X = nextPos.X
                 listItem.Add(targetLinePos)
