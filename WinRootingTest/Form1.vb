@@ -236,15 +236,36 @@
             If Me.drawGreen.Checked Then
                 ' 次のアイテムまでの線を描画
                 If Not targetDir.Y = 0 Then
+                    Dim isUp As Boolean = False
+
                     ' 横線を描画
                     Dim lineX As Integer = centerPos.X * 2
                     If targetDir.Y > 0 Then
                         ' 下から上へ
                         lineX = centerPos.X * 1
+                        isUp = True
                     End If
-                    If addX < 0 Then
-                        lineX *= -1
+                    Dim lineAddX = addX > 0
+                    If Not isRightStart Then
+                        lineAddX = Not lineAddX
                     End If
+
+                    If lineAddX Then
+                        If Not isUp AndAlso Math.Abs(targetDir.X) > centerPos.X * 2 Then
+                            lineX += centerPos.X * 2
+                        End If
+                        If Not isRightStart Then
+                            lineX *= -1
+                        End If
+                    Else
+                        If Not isUp AndAlso Math.Abs(targetDir.X) > centerPos.X * 2 Then
+                            lineX += centerPos.X * 2
+                        End If
+                        If isRightStart Then
+                            lineX *= -1
+                        End If
+                    End If
+
                     targetLinePos.X += lineX
                     listItem.Add(targetLinePos)
 
