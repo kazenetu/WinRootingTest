@@ -253,6 +253,9 @@
                     If lineAddX Then
                         If Not isUp AndAlso Math.Abs(targetDir.X) > centerPos.X * 2 Then
                             lineX += centerPos.X * 2
+                            If targetLinePos.X + lineX < nextPos.X Then
+                                lineX -= centerPos.X * 2
+                            End If
                         End If
                         If Not isRightStart Then
                             lineX *= -1
@@ -260,6 +263,9 @@
                     Else
                         If Not isUp AndAlso Math.Abs(targetDir.X) > centerPos.X * 2 Then
                             lineX += centerPos.X * 2
+                            If targetLinePos.X + lineX > nextPos.X Then
+                                lineX -= centerPos.X * 2
+                            End If
                         End If
                         If isRightStart Then
                             lineX *= -1
