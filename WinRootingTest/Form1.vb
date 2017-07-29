@@ -369,49 +369,48 @@
         result.Add(targetLinePos)
 
         ' 「緑線を表示」にチェックされていれば表示
-        If Me.drawGreen.Checked Or True Then
-            ' 次のアイテムまでの線を描画
-            If Not targetDir.Y = 0 Or True Then
-                Dim lineX As Integer
-                If targetDir.Y >= 0 Then
-                    If isTurnLine Then
-                        ' 横線を描画
-                        lineX = centerPos.X * 2
-                        If addX < 0 Then
-                            lineX *= -1
-                        End If
-                        targetLinePos.X = targetPos.X + lineX
-                        result.Add(targetLinePos)
+        If Me.drawGreen.Checked Then
+            Dim lineX As Integer
 
-                        ' 縦線を描画
-                        targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                        result.Add(targetLinePos)
-                    End If
-
+            ' 高さが異なる場合は迂回する
+            If targetDir.Y >= 0 Then
+                If isTurnLine Then
                     ' 横線を描画
                     lineX = centerPos.X * 2
-                    If targetDir.X > 0 Then
+                    If addX < 0 Then
                         lineX *= -1
                     End If
-                    If isTurnLine Then
-                        If nextPos.X > targetPos.X Then
-                            targetLinePos.X = nextPos.X + lineX
-                        End If
-                    Else
-                        If nextPos.X < targetPos.X Then
-                            targetLinePos.X = targetPos.X + lineX
-                        End If
-                    End If
+                    targetLinePos.X = targetPos.X + lineX
                     result.Add(targetLinePos)
 
-                    ' 縦線を描画
-                    targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                    result.Add(targetLinePos)
-                Else
                     ' 縦線を描画
                     targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
                     result.Add(targetLinePos)
                 End If
+
+                ' 横線を描画
+                lineX = centerPos.X * 2
+                If targetDir.X > 0 Then
+                    lineX *= -1
+                End If
+                If isTurnLine Then
+                    If nextPos.X > targetPos.X Then
+                        targetLinePos.X = nextPos.X + lineX
+                    End If
+                Else
+                    If nextPos.X < targetPos.X Then
+                        targetLinePos.X = targetPos.X + lineX
+                    End If
+                End If
+                result.Add(targetLinePos)
+
+                ' 縦線を描画
+                targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                result.Add(targetLinePos)
+            Else
+                ' 縦線を描画
+                targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                result.Add(targetLinePos)
             End If
 
             ' 次のアイテムまでの横線を描画
