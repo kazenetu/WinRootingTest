@@ -207,26 +207,32 @@
 
             ' 斜め線を追加
             Dim addX = spaceSize
-            If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
-                If isRight Then
-                    If targetDir.X > 0 Then
-                        addX *= -1
-                    End If
-                Else
-                    addX *= -1
-                    If targetDir.X < 0 Then
-                        addX *= -1
-                    End If
-                End If
-            Else
-                If isRight Then
-                    If targetDir.Y > 0 Then
-                        addX *= -1
-                    End If
-                Else
-                    addX *= -1
-                End If
+            If Not isRight Then
+                addX *= -1
             End If
+            'If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
+            '    If isRight Then
+            '        If targetDir.X > 0 Then
+            '            addX *= -1
+            '        End If
+            '    Else
+            '        addX *= -1
+            '        If targetDir.X < 0 Then
+            '            addX *= -1
+            '        End If
+            '    End If
+            'Else
+            '    If isRight Then
+            '        If targetDir.Y > 0 AndAlso Math.Abs(targetDir.X) > centerPos.X * 2 Then
+            '            addX *= -1
+            '        End If
+            '    Else
+            '        addX *= -1
+            '        If targetDir.Y > 0 Then
+            '            addX *= -1
+            '        End If
+            '    End If
+            'End If
 
             targetLinePos.X += addX
             targetLinePos.Y -= spaceSize
@@ -278,9 +284,13 @@
                     ' 縦線を描画
                     targetLinePos.Y += targetDir.Y * -1
                     listItem.Add(targetLinePos)
-                End If
 
-                isRight = targetLinePos.X < nextPos.X
+                    If Not isUp Then
+                        isRight = Not isRight
+                    End If
+                Else
+                    isRight = targetLinePos.X < nextPos.X
+                End If
 
 
                 ' 次のアイテムまでの横線を描画
