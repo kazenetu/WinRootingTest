@@ -210,29 +210,6 @@
             If Not isRight Then
                 addX *= -1
             End If
-            'If Math.Abs(targetDir.Y) <= centerPos.Y * 2 Then
-            '    If isRight Then
-            '        If targetDir.X > 0 Then
-            '            addX *= -1
-            '        End If
-            '    Else
-            '        addX *= -1
-            '        If targetDir.X < 0 Then
-            '            addX *= -1
-            '        End If
-            '    End If
-            'Else
-            '    If isRight Then
-            '        If targetDir.Y > 0 AndAlso Math.Abs(targetDir.X) > centerPos.X * 2 Then
-            '            addX *= -1
-            '        End If
-            '    Else
-            '        addX *= -1
-            '        If targetDir.Y > 0 Then
-            '            addX *= -1
-            '        End If
-            '    End If
-            'End If
 
             targetLinePos.X += addX
             targetLinePos.Y -= spaceSize
@@ -376,12 +353,7 @@
         End If
 
         targetLinePos.X += addX
-        If targetDir.Y < 0 Or True Then
-            ' アイコン下部から開始
-            targetLinePos.Y += spaceSize
-        Else
-            targetLinePos.Y -= spaceSize
-        End If
+        targetLinePos.Y += spaceSize
         result.Add(targetLinePos)
 
         ' 「緑線を表示」にチェックされていれば表示
