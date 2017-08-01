@@ -377,19 +377,23 @@
                 End If
 
                 ' 横線を描画
-                lineX = centerPos.X * 2
-                If targetDir.X > 0 Then
+                If Not isRight Then
+                    If Math.Abs(targetDir.X) > centerPos.X * 2 Then
+                        lineX += centerPos.X * 2
+                        If targetLinePos.X + lineX < nextPos.X Then
+                            lineX -= centerPos.X * 2
+                        End If
+                    End If
                     lineX *= -1
-                End If
-                If isTurnLine Then
-                    If nextPos.X > targetPos.X Then
-                        targetLinePos.X = nextPos.X + lineX
-                    End If
                 Else
-                    If nextPos.X < targetPos.X Then
-                        targetLinePos.X = targetPos.X + lineX
+                    If Math.Abs(targetDir.X) > centerPos.X * 2 Then
+                        lineX += centerPos.X * 2
+                        If targetLinePos.X + lineX > nextPos.X Then
+                            lineX -= centerPos.X * 2
+                        End If
                     End If
                 End If
+                targetLinePos.X = targetPos.X + lineX
                 result.Add(targetLinePos)
 
                 ' 縦線を描画
