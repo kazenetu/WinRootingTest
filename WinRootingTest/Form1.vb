@@ -258,12 +258,31 @@
                     targetLinePos.X += lineX
                     listItem.Add(targetLinePos)
 
-                    ' 縦線を描画
-                    targetLinePos.Y += targetDir.Y * -1
-                    listItem.Add(targetLinePos)
+                    If targetDir.X = 0 Then
+                        ' 回り込む
 
-                    If Not isUp Then
-                        isRight = Not isRight
+                        isRight = lineAddX < 0
+
+                        ' 縦線を描画
+                        targetLinePos.Y = targetPos.Y + centerPos.Y * 2
+                        listItem.Add(targetLinePos)
+
+                        ' 次のアイテムまでの横線を描画
+                        targetLinePos.X = nextPos.X
+                        listItem.Add(targetLinePos)
+
+                        ' 縦線を描画
+                        targetLinePos.Y = nextPos.Y - spaceSize
+                        listItem.Add(targetLinePos)
+
+                    Else
+                        ' 縦線を描画
+                        targetLinePos.Y += targetDir.Y * -1
+                        listItem.Add(targetLinePos)
+
+                        If Not isUp Then
+                            isRight = Not isRight
+                        End If
                     End If
                 Else
                     isRight = targetLinePos.X < nextPos.X
