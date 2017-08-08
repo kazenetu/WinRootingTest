@@ -134,9 +134,9 @@
             If Not query.Any() Then
                 ' 優先度3. 選択オブジェクトと比較して「左または右で下の位置のオブジェクト」を探す（縦方向）
                 If isReverce Then
-                    query = labels.Where(Function(item) item.Location.X <= target.Location.X AndAlso item.Location.Y > target.Location.Y)
+                    query = labels.Where(Function(item) item.Location.X < target.Location.X AndAlso item.Location.Y > target.Location.Y)
                 Else
-                    query = labels.Where(Function(item) item.Location.X >= target.Location.X AndAlso item.Location.Y > target.Location.Y)
+                    query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y > target.Location.Y)
                 End If
             End If
 
@@ -156,7 +156,19 @@
             End If
 
             ' 絞り込んだ条件から一番近いオブジェクトを次の移動先オブジェクトとして選択する
-            target = query.OrderBy(Function(item) getDistance(item.Location, target.Location)).First()
+            Dim oldX = target.Location.X
+            target = query.OrderBy(Function(item) item.Location.Y).ThenBy(Function(item) getDistance(item.Location, target.Location)).First()
+
+            ' 方向転換の判定
+            If isReverce Then
+                If target.Location.X > oldX Then
+                    isReverce = Not isReverce
+                End If
+            Else
+                If target.Location.X < oldX Then
+                    isReverce = Not isReverce
+                End If
+            End If
 
             ' 戻り値リストの追加と追加対象リストの削除
             result.Add(target)
@@ -233,29 +245,20 @@
                         lineAddX = Not lineAddX
                     End If
 
-                    If lineAddX Then
-                        If Not isUp AndAlso Math.Abs(targetDir.X) > centerPos.X * 2 Then
-                            lineX += centerPos.X * 2
-                            If targetLinePos.X + lineX < nextPos.X Then
-                                lineX -= centerPos.X * 2
-                            End If
-                        End If
-                        If Not isRightStart Then
-                            lineX *= -1
-                        End If
+                    If isUp Then
+                        targetLinePos.X += lineX
                     Else
-                        If Not isUp AndAlso Math.Abs(targetDir.X) > centerPos.X * 2 Then
-                            lineX += centerPos.X * 2
-                            If targetLinePos.X + lineX > nextPos.X Then
-                                lineX -= centerPos.X * 2
+                        If addX > 0 Then
+                            targetLinePos.X = nextPos.X
+                        Else
+                            lineX = centerPos.X * 2
+                            If Not isRight Then
+                                lineX *= -1
                             End If
-                        End If
-                        If isRightStart Then
-                            lineX *= -1
+                            targetLinePos.X += lineX
                         End If
                     End If
 
-                    targetLinePos.X += lineX
                     listItem.Add(targetLinePos)
 
                     If targetDir.X = 0 Then
