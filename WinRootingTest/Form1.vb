@@ -225,7 +225,7 @@
                     Dim lineX As Integer = centerPos.X * 2
                     If targetDir.Y > 0 Then
                         ' 下から上へ
-                        lineX = centerPos.X * 1
+                        lineX = Math.Abs(targetDir.X) / 2
                         isUp = True
                     End If
                     Dim lineAddX = addX > 0
