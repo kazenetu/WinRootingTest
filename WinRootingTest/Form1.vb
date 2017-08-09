@@ -71,6 +71,16 @@
     End Sub
 
     ''' <summary>
+    ''' ルートの設定方向
+    ''' </summary>
+    Private Enum RootingDirection
+        None
+        All
+        Holizontal
+        Vertical
+    End Enum
+
+    ''' <summary>
     ''' Labelルーティングの生成
     ''' </summary>
     ''' <returns></returns>
@@ -113,6 +123,7 @@
         ' 2つ目以降の経路選択
         While (labels.LongCount > 0)
 
+            Dim direction As RootingDirection = RootingDirection.None
             Dim query As IEnumerable(Of Label) = Nothing
 
             ' 優先度1. 選択オブジェクトと比較して「左または右で上または同じ位置のオブジェクト」を探す（横方向）
@@ -120,6 +131,9 @@
                 query = labels.Where(Function(item) item.Location.X < target.Location.X AndAlso item.Location.Y <= target.Location.Y)
             Else
                 query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y <= target.Location.Y)
+            End If
+            If direction = RootingDirection.None AndAlso query.Any() Then
+                direction = RootingDirection.Holizontal
             End If
 
             If Not query.Any() Then
@@ -130,6 +144,9 @@
                     query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y <= target.Location.Y)
                 End If
             End If
+            If direction = RootingDirection.None AndAlso query.Any() Then
+                direction = RootingDirection.Holizontal
+            End If
 
             If Not query.Any() Then
                 ' 優先度3. 選択オブジェクトと比較して「左または右で下の位置のオブジェクト」を探す（縦方向）
@@ -138,6 +155,9 @@
                 Else
                     query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y > target.Location.Y)
                 End If
+            End If
+            If direction = RootingDirection.None AndAlso query.Any() Then
+                direction = RootingDirection.Vertical
             End If
 
             If Not query.Any() Then
@@ -148,16 +168,29 @@
                     query = labels.Where(Function(item) item.Location.X >= target.Location.X AndAlso item.Location.Y > target.Location.Y)
                 End If
             End If
-
+            If direction = RootingDirection.None AndAlso query.Any() Then
+                direction = RootingDirection.Vertical
+            End If
 
             If Not query.Any() Then
                 ' 優先度5. すべてのオブジェクトを対象とする
                 query = labels.Where(Function(item) True)
+                direction = RootingDirection.All
             End If
 
             ' 絞り込んだ条件から一番近いオブジェクトを次の移動先オブジェクトとして選択する
             Dim oldX = target.Location.X
-            target = query.OrderBy(Function(item) item.Location.Y).ThenBy(Function(item) getDistance(item.Location, target.Location)).First()
+            Dim targetQuery = query.OrderBy(Function(item) item.Location.Y)
+            If direction = RootingDirection.Vertical Then
+                If isReverce Then
+                    targetQuery = targetQuery.ThenBy(Function(item) item.Location.X)
+                Else
+                    targetQuery = targetQuery.ThenByDescending(Function(item) item.Location.X)
+                End If
+            Else
+                targetQuery = targetQuery.ThenBy(Function(item) getDistance(item.Location, target.Location))
+            End If
+            target = targetQuery.First()
 
             ' 方向転換の判定
             If isReverce Then
