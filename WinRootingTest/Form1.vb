@@ -155,6 +155,7 @@
                 Else
                     query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y > target.Location.Y)
                 End If
+                query = labels.Where(Function(item) item.Location.Y > target.Location.Y)
             End If
             If direction = RootingDirection.None AndAlso query.Any() Then
                 direction = RootingDirection.Vertical
@@ -194,11 +195,11 @@
 
             ' 方向転換の判定
             If isReverce Then
-                If target.Location.X > oldX Then
+                If target.Location.X >= oldX Then
                     isReverce = Not isReverce
                 End If
             Else
-                If target.Location.X < oldX Then
+                If target.Location.X <= oldX Then
                     isReverce = Not isReverce
                 End If
             End If
@@ -274,27 +275,35 @@
                         isUp = True
                     End If
                     Dim lineAddX = addX > 0
-                    If Not isRightStart Then
+                    If Not isRight Then
                         lineAddX = Not lineAddX
                     End If
 
                     If isUp Then
                         targetLinePos.X += lineX
                     Else
-                        If addX > 0 Then
-                            targetLinePos.X = nextPos.X
-                        Else
-                            lineX = centerPos.X * 2
-                            If Not isRight Then
-                                lineX *= -1
-                            End If
-                            targetLinePos.X += lineX
+                        lineX = centerPos.X * 2
+                        If Not isRight Then
+                            lineX *= -1
                         End If
+                        targetLinePos.X += lineX
+
+                        If isRight Then
+                            If targetLinePos.X < nextPos.X Then
+                                targetLinePos.X = nextPos.X
+                            End If
+                        Else
+                            If targetLinePos.X > nextPos.X Then
+                                targetLinePos.X = nextPos.X
+                            End If
+                        End If
+
+
                     End If
 
                     listItem.Add(targetLinePos)
 
-                    If targetDir.X = 0 Then
+                    If targetDir.X = 0 And False Then
                         ' 回り込む
 
                         isRight = lineAddX < 0
