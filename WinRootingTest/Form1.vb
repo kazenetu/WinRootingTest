@@ -150,11 +150,6 @@
 
             If Not query.Any() Then
                 ' 優先度3. 選択オブジェクトと比較して「左または右で下の位置のオブジェクト」を探す（縦方向）
-                If isReverce Then
-                    query = labels.Where(Function(item) item.Location.X < target.Location.X AndAlso item.Location.Y > target.Location.Y)
-                Else
-                    query = labels.Where(Function(item) item.Location.X > target.Location.X AndAlso item.Location.Y > target.Location.Y)
-                End If
                 query = labels.Where(Function(item) item.Location.Y > target.Location.Y)
             End If
             If direction = RootingDirection.None AndAlso query.Any() Then
@@ -162,19 +157,7 @@
             End If
 
             If Not query.Any() Then
-                ' 優先度4. 選択オブジェクトと比較して「優先度3の逆方向のオブジェクト」を探す（縦方向）
-                If Not isReverce Then
-                    query = labels.Where(Function(item) item.Location.X <= target.Location.X AndAlso item.Location.Y > target.Location.Y)
-                Else
-                    query = labels.Where(Function(item) item.Location.X >= target.Location.X AndAlso item.Location.Y > target.Location.Y)
-                End If
-            End If
-            If direction = RootingDirection.None AndAlso query.Any() Then
-                direction = RootingDirection.Vertical
-            End If
-
-            If Not query.Any() Then
-                ' 優先度5. すべてのオブジェクトを対象とする
+                ' 優先度4. すべてのオブジェクトを対象とする
                 query = labels.Where(Function(item) True)
                 direction = RootingDirection.All
             End If
@@ -373,7 +356,6 @@
         Dim targetDir As Point = targetPos - nextPos
 
         ' 開始位置を除外した中継点リストを取得する
-        'Dim query = rootList.Where(Function(item) Not (item.Location.X = rootList(0).Location.X AndAlso item.Location.Y = rootList(0).Location.Y))
         Dim query = rootList.Where(Function(item) Not item Is rootList(0))
 
         ' 次のアイテムと同行の中継点リストを取得する
