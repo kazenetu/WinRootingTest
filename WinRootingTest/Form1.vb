@@ -363,22 +363,26 @@
         Dim targetPos As Point = rootList(0).Location + centerPos
         Dim nextPos As Point = rootList(1).Location + centerPos
         Dim targetLinePos As Point = Nothing
-        Dim isTurnLine As Boolean = False
 
-        ' 描画開始位置のデフォルト(アイコン上部からスタート)
+        ' アイコン下部から開始
         targetLinePos = targetPos
-        targetLinePos.Y -= centerPos.Y
+        targetLinePos.Y += centerPos.Y
+        result.Add(targetLinePos)
 
+        ' 向きを計算
         Dim targetDir As Point = targetPos - nextPos
 
-        If targetDir.X < 0 Then
-            isRight = True
-        Else
-            isRight = False
+        ' 開始位置を除外した中継点リストを取得する
+        'Dim query = rootList.Where(Function(item) Not (item.Location.X = rootList(0).Location.X AndAlso item.Location.Y = rootList(0).Location.Y))
+        Dim query = rootList.Where(Function(item) Not item Is rootList(0))
+
+        ' 次のアイテムと同行の中継点リストを取得する
+        Dim topQuery = query.Where(Function(item) item.Location.Y = rootList(1).Location.Y)
+
+        Dim isLineLeft As Boolean = True
+        If topQuery.Count > 1 AndAlso topQuery.Max(Function(item) item.Location.X) = rootList(1).Location.X Then
+            isLineLeft = False
         End If
-        ' 次のアイコンが下にある場合、アイコン下部から開始
-        targetLinePos.Y += centerPos.Y * 2
-        result.Add(targetLinePos)
 
         ' 斜め線を追加
         Dim addX = spaceSize
@@ -391,29 +395,11 @@
                 addX *= -1
             End If
         End If
-        If targetDir.Y > 0 Then
-            Dim targetPoint As Point = rootList(0).Location
-            Dim nextPoint As Point = rootList(1).Location
-            Dim query = rootList.Where(Function(item) item.Location.Y = targetPoint.Y)
-            Dim queryNext = rootList.Where(Function(item) item.Location.Y = nextPoint.Y)
 
-            If query.Min(Function(item) item.Location.X) = targetPoint.X Then
-                addX = -spaceSize
-                If targetDir.X <= 0 Then
-                    isTurnLine = True
-                End If
-                If queryNext.Max(Function(item) item.Location.X) = nextPoint.X Then
-                    addX *= -1
-                End If
-            ElseIf query.Max(Function(item) item.Location.X) = targetPoint.X Then
-                addX = spaceSize
-                If targetDir.X >= 0 Then
-                    isTurnLine = True
-                End If
-                If queryNext.Min(Function(item) item.Location.X) = nextPoint.X Then
-                    addX *= -1
-                End If
-            End If
+        If targetDir.X < 0 Then
+            isRight = True
+        Else
+            isRight = False
         End If
 
         targetLinePos.X += addX
@@ -426,43 +412,35 @@
 
             ' 高さが異なる場合は迂回する
             If targetDir.Y >= 0 Then
-                If isTurnLine Then
-                    ' 横線を描画
-                    lineX = centerPos.X * 2
-                    If addX < 0 Then
-                        lineX *= -1
-                    End If
-                    targetLinePos.X = targetPos.X + lineX
-                    result.Add(targetLinePos)
 
-                    ' 縦線を描画
-                    targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                    result.Add(targetLinePos)
-                End If
-
-                ' 横線を描画
-                If Not isRight Then
-                    If Math.Abs(targetDir.X) > centerPos.X * 2 Then
-                        lineX += centerPos.X * 2
-                        If targetLinePos.X + lineX < nextPos.X Then
-                            lineX -= centerPos.X * 2
-                        End If
+                ' 折り返し線：横線
+                If isLineLeft Then
+                    ' 次のアイテムは左端
+                    If targetDir.X < 0 Then
+                        ' アイテムに対して開始位置は左
+                        targetLinePos.X = targetPos.X - centerPos.X * 2
+                    Else
+                        ' アイテムに対して開始位置は右
+                        targetLinePos.X = nextPos.X - centerPos.X * 2
                     End If
-                    lineX *= -1
+                    isRight = True
                 Else
-                    If Math.Abs(targetDir.X) > centerPos.X * 2 Then
-                        lineX += centerPos.X * 2
-                        If targetLinePos.X + lineX > nextPos.X Then
-                            lineX -= centerPos.X * 2
-                        End If
+                    ' 次のアイテムは右端
+                    If targetDir.X < 0 Then
+                        ' アイテムに対して開始位置は左
+                        targetLinePos.X = nextPos.X + centerPos.X * 2
+                    Else
+                        ' アイテムに対して開始位置は右
+                        targetLinePos.X = targetPos.X + centerPos.X * 2
                     End If
+                    isRight = False
                 End If
-                targetLinePos.X = targetPos.X + lineX
                 result.Add(targetLinePos)
 
                 ' 縦線を描画
                 targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
                 result.Add(targetLinePos)
+
             Else
                 ' 縦線を描画
                 targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
