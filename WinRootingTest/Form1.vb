@@ -81,6 +81,11 @@
     End Enum
 
     ''' <summary>
+    ''' 特殊ルートの設定フラグ
+    ''' </summary>
+    Private isSpecialMode As Boolean
+
+    ''' <summary>
     ''' Labelルーティングの生成
     ''' </summary>
     ''' <returns></returns>
@@ -95,6 +100,21 @@
             End If
         Next
 
+        ' 特殊ルート設定フラグをクリア
+        Me.isSpecialMode = False
+
+        ' HACK 特殊ルート設定条件
+        If labels.Min(Function(item) item.Location.X) <= startLabel.Location.X AndAlso
+            labels.Max(Function(item) item.Location.X) >= startLabel.Location.X Then
+
+            If labels.Min(Function(item) item.Location.Y) < startLabel.Location.Y AndAlso
+                labels.Max(Function(item) item.Location.Y) > startLabel.Location.Y Then
+
+                Me.isSpecialMode = True
+            End If
+        End If
+
+
         ' 上段の左端と右端を取得する
         Dim minY As Integer = labels.Min(Function(item) item.Location.Y)
         Dim upperLineQuery = labels.Where(Function(item) item.Location.Y = minY)
@@ -104,7 +124,7 @@
         ' 最初に選択されるラベルを取得する
         Dim isReverce As Boolean = False
         Dim targetX As Integer
-        If startLabel.Location.X > leftX + (rightX - leftX) / 2 Then
+        If Me.isSpecialMode OrElse startLabel.Location.X > leftX + (rightX - leftX) / 2 Then
             targetX = rightX
             isReverce = True
         Else
@@ -395,33 +415,48 @@
             ' 高さが異なる場合は迂回する
             If targetDir.Y >= 0 Then
 
-                ' 折り返し線：横線
-                If isLineLeft Then
-                    ' 次のアイテムは左端
-                    If targetDir.X < 0 Then
-                        ' アイテムに対して開始位置は左
-                        targetLinePos.X = targetPos.X - centerPos.X * 2
-                    Else
-                        ' アイテムに対して開始位置は右
-                        targetLinePos.X = nextPos.X - centerPos.X * 2
-                    End If
-                    isRight = True
-                Else
-                    ' 次のアイテムは右端
-                    If targetDir.X < 0 Then
-                        ' アイテムに対して開始位置は左
-                        targetLinePos.X = nextPos.X + centerPos.X * 2
-                    Else
-                        ' アイテムに対して開始位置は右
-                        targetLinePos.X = targetPos.X + centerPos.X * 2
-                    End If
-                    isRight = False
-                End If
-                result.Add(targetLinePos)
+                If Me.isSpecialMode Then
 
-                ' 縦線を描画
-                targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                result.Add(targetLinePos)
+                    ' 折り返し線：特殊ルート：横線
+                    Dim nextQuery = rootList.Where(Function(item) item.Location.Y = rootList(1).Location.Y)
+                    targetLinePos.X = nextQuery.Min(Function(item) item.Location.X) - centerPos.X * 2
+                    result.Add(targetLinePos)
+
+                    ' 特殊ルート：縦線を描画
+                    targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y * 2)
+                    result.Add(targetLinePos)
+
+                    isRight = False
+                Else
+
+                    ' 折り返し線：横線
+                    If isLineLeft Then
+                        ' 次のアイテムは左端
+                        If targetDir.X < 0 Then
+                            ' アイテムに対して開始位置は左
+                            targetLinePos.X = targetPos.X - centerPos.X * 2
+                        Else
+                            ' アイテムに対して開始位置は右
+                            targetLinePos.X = nextPos.X - centerPos.X * 2
+                        End If
+                        isRight = True
+                    Else
+                        ' 次のアイテムは右端
+                        If targetDir.X < 0 Then
+                            ' アイテムに対して開始位置は左
+                            targetLinePos.X = nextPos.X + centerPos.X * 2
+                        Else
+                            ' アイテムに対して開始位置は右
+                            targetLinePos.X = targetPos.X + centerPos.X * 2
+                        End If
+                        isRight = False
+                    End If
+                    result.Add(targetLinePos)
+
+                    ' 縦線を描画
+                    targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                    result.Add(targetLinePos)
+                End If
 
             Else
                 ' 縦線を描画
@@ -433,7 +468,7 @@
             targetLinePos.X = nextPos.X
             result.Add(targetLinePos)
             ' 短い縦線を描画
-            targetLinePos.Y += spaceSize
+            targetLinePos.Y = nextPos.Y + spaceSize
             result.Add(targetLinePos)
         End If
 
