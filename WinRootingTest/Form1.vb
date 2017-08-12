@@ -381,9 +381,16 @@
         ' 次のアイテムと同行の中継点リストを取得する
         Dim topQuery = query.Where(Function(item) item.Location.Y = rootList(1).Location.Y)
 
+        ' 左側に線を引くか確認
         Dim isLineLeft As Boolean = True
-        If topQuery.Count > 1 AndAlso topQuery.Max(Function(item) item.Location.X) = rootList(1).Location.X Then
-            isLineLeft = False
+        If topQuery.Count > 1 Then
+            If topQuery.Max(Function(item) item.Location.X) = rootList(1).Location.X Then
+                isLineLeft = False
+            End If
+        Else
+            If topQuery.Max(Function(item) item.Location.X) < rootList(0).Location.X Then
+                isLineLeft = False
+            End If
         End If
 
         ' 斜め線を追加
