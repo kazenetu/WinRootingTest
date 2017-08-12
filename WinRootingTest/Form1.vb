@@ -417,7 +417,6 @@
 
         ' 「緑線を表示」にチェックされていれば表示
         If Me.drawGreen.Checked Then
-            Dim lineX As Integer
 
             ' 高さが異なる場合は迂回する
             If targetDir.Y >= 0 Then
