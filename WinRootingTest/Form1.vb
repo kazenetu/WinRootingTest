@@ -103,7 +103,7 @@
         ' 特殊ルート設定フラグをクリア
         Me.isSpecialMode = False
 
-        ' HACK 特殊ルート設定条件
+        ' 特殊ルート設定条件
         If labels.Min(Function(item) item.Location.X) <= startLabel.Location.X AndAlso
             labels.Max(Function(item) item.Location.X) >= startLabel.Location.X Then
 
@@ -116,7 +116,7 @@
         If Me.isSpecialMode Then
             Me.isSpecialMode = False
             Dim checkQuery = labels.Where(Function(item) item.Location.Y = startLabel.Location.Y)
-            If checkQuery.Any() AndAlso checkQuery.Min(Function(item) item.Location.X) <= startLabel.Location.X Then
+            If checkQuery.Any() AndAlso checkQuery.Max(Function(item) item.Location.X) > startLabel.Location.X Then
                 Me.isSpecialMode = True
             End If
         End If
