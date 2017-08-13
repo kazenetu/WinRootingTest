@@ -113,6 +113,13 @@
                 Me.isSpecialMode = True
             End If
         End If
+        If Me.isSpecialMode Then
+            Me.isSpecialMode = False
+            Dim checkQuery = labels.Where(Function(item) item.Location.Y = startLabel.Location.Y)
+            If checkQuery.Any() AndAlso checkQuery.Min(Function(item) item.Location.X) <= startLabel.Location.X Then
+                Me.isSpecialMode = True
+            End If
+        End If
 
 
         ' 上段の左端と右端を取得する
