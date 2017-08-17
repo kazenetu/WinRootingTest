@@ -48,10 +48,17 @@
     ''' <param name="e"></param>
     Private Sub Label_MouseDown(sender As Object, e As MouseEventArgs)
         Dim target As Label = DirectCast(sender, Label)
-        target.Tag = e.Location
 
         ' ルーティングパスのクリア
         Me.clearRooting()
+
+        If e.Button = MouseButtons.Right Then
+            If target IsNot Me.Label1 Then
+                Me.Controls.Remove(target)
+            End If
+        Else
+            target.Tag = e.Location
+        End If
     End Sub
 
     ''' <summary>
