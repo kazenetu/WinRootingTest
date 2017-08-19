@@ -26,7 +26,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub addLabel_Click(sender As Object, e As EventArgs) Handles addLabel.Click
+    Private Sub addLabel_Click(sender As Object, e As EventArgs)
         Dim newLabel As New Label()
 
         newLabel.Width = Label2.Width
@@ -520,7 +520,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub showRooting_Click(sender As Object, e As EventArgs) Handles showRooting.Click
+    Private Sub showRooting_Click(sender As Object, e As EventArgs)
         ' ルーティングパスのクリア
         Me.clearRooting()
 

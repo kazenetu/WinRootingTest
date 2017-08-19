@@ -24,9 +24,11 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.showRooting = New System.Windows.Forms.Button()
-        Me.drawGreen = New System.Windows.Forms.CheckBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.addLabel = New System.Windows.Forms.Button()
+        Me.drawGreen = New System.Windows.Forms.CheckBox()
+        Me.showRooting = New System.Windows.Forms.Button()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label1
@@ -53,55 +55,67 @@ Partial Class Form1
         Me.Label2.Text = "中継点"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'showRooting
+        'Panel1
         '
-        Me.showRooting.Location = New System.Drawing.Point(528, 12)
-        Me.showRooting.Name = "showRooting"
-        Me.showRooting.Size = New System.Drawing.Size(109, 23)
-        Me.showRooting.TabIndex = 7
-        Me.showRooting.Text = "ルーティング表示"
-        Me.showRooting.UseVisualStyleBackColor = True
+        Me.Panel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.addLabel)
+        Me.Panel1.Controls.Add(Me.drawGreen)
+        Me.Panel1.Controls.Add(Me.showRooting)
+        Me.Panel1.Location = New System.Drawing.Point(419, 19)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(271, 142)
+        Me.Panel1.TabIndex = 10
+        '
+        'addLabel
+        '
+        Me.addLabel.Location = New System.Drawing.Point(17, 25)
+        Me.addLabel.Name = "addLabel"
+        Me.addLabel.Size = New System.Drawing.Size(96, 23)
+        Me.addLabel.TabIndex = 12
+        Me.addLabel.Text = "中継点の追加"
+        Me.addLabel.UseVisualStyleBackColor = True
         '
         'drawGreen
         '
         Me.drawGreen.AutoSize = True
         Me.drawGreen.Checked = True
         Me.drawGreen.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.drawGreen.Location = New System.Drawing.Point(538, 54)
+        Me.drawGreen.Location = New System.Drawing.Point(151, 67)
         Me.drawGreen.Name = "drawGreen"
         Me.drawGreen.Size = New System.Drawing.Size(81, 16)
-        Me.drawGreen.TabIndex = 8
+        Me.drawGreen.TabIndex = 11
         Me.drawGreen.Text = "緑線を表示"
         Me.drawGreen.UseVisualStyleBackColor = True
         '
-        'addLabel
+        'showRooting
         '
-        Me.addLabel.Location = New System.Drawing.Point(404, 12)
-        Me.addLabel.Name = "addLabel"
-        Me.addLabel.Size = New System.Drawing.Size(96, 23)
-        Me.addLabel.TabIndex = 9
-        Me.addLabel.Text = "中継点の追加"
-        Me.addLabel.UseVisualStyleBackColor = True
+        Me.showRooting.Location = New System.Drawing.Point(141, 25)
+        Me.showRooting.Name = "showRooting"
+        Me.showRooting.Size = New System.Drawing.Size(109, 23)
+        Me.showRooting.TabIndex = 10
+        Me.showRooting.Text = "ルーティング表示"
+        Me.showRooting.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(702, 447)
-        Me.Controls.Add(Me.addLabel)
-        Me.Controls.Add(Me.drawGreen)
-        Me.Controls.Add(Me.showRooting)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Name = "Form1"
         Me.Text = "Form1"
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
-    Friend WithEvents showRooting As Button
-    Friend WithEvents drawGreen As CheckBox
+    Friend WithEvents Panel1 As Panel
     Friend WithEvents addLabel As Button
+    Friend WithEvents drawGreen As CheckBox
+    Friend WithEvents showRooting As Button
 End Class
