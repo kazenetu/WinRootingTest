@@ -1,4 +1,15 @@
 ﻿Public Class Form1
+
+    ''' <summary>
+    ''' ルーティングモード
+    ''' </summary>
+    Private Enum RootingMode
+        Auto = 0
+        Left
+        LeftToRight
+        Right
+    End Enum
+
     ''' <summary>
     ''' フォームロード
     ''' </summary>
@@ -26,7 +37,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub addLabel_Click(sender As Object, e As EventArgs)
+    Private Sub addLabel_Click(sender As Object, e As EventArgs) Handles addLabel.Click
         Dim newLabel As New Label()
 
         newLabel.Width = Label2.Width
@@ -520,7 +531,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub showRooting_Click(sender As Object, e As EventArgs)
+    Private Sub showRooting_Click(sender As Object, e As EventArgs) Handles showRooting.Click
         ' ルーティングパスのクリア
         Me.clearRooting()
 

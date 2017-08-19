@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'フォームがコンポーネントの一覧をクリーンアップするために dispose をオーバーライドします。
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Form1
     'メモ: 以下のプロシージャは Windows フォーム デザイナーで必要です。
     'Windows フォーム デザイナーを使用して変更できます。  
     'コード エディターを使って変更しないでください。
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -62,14 +62,14 @@ Partial Class Form1
         Me.Panel1.Controls.Add(Me.addLabel)
         Me.Panel1.Controls.Add(Me.drawGreen)
         Me.Panel1.Controls.Add(Me.showRooting)
-        Me.Panel1.Location = New System.Drawing.Point(419, 19)
+        Me.Panel1.Location = New System.Drawing.Point(523, 19)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(271, 142)
+        Me.Panel1.Size = New System.Drawing.Size(167, 191)
         Me.Panel1.TabIndex = 10
         '
         'addLabel
         '
-        Me.addLabel.Location = New System.Drawing.Point(17, 25)
+        Me.addLabel.Location = New System.Drawing.Point(34, 3)
         Me.addLabel.Name = "addLabel"
         Me.addLabel.Size = New System.Drawing.Size(96, 23)
         Me.addLabel.TabIndex = 12
@@ -81,7 +81,7 @@ Partial Class Form1
         Me.drawGreen.AutoSize = True
         Me.drawGreen.Checked = True
         Me.drawGreen.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.drawGreen.Location = New System.Drawing.Point(151, 67)
+        Me.drawGreen.Location = New System.Drawing.Point(34, 119)
         Me.drawGreen.Name = "drawGreen"
         Me.drawGreen.Size = New System.Drawing.Size(81, 16)
         Me.drawGreen.TabIndex = 11
@@ -90,7 +90,7 @@ Partial Class Form1
         '
         'showRooting
         '
-        Me.showRooting.Location = New System.Drawing.Point(141, 25)
+        Me.showRooting.Location = New System.Drawing.Point(24, 77)
         Me.showRooting.Name = "showRooting"
         Me.showRooting.Size = New System.Drawing.Size(109, 23)
         Me.showRooting.TabIndex = 10
