@@ -28,6 +28,7 @@ Partial Class Form1
         Me.addLabel = New System.Windows.Forms.Button()
         Me.drawGreen = New System.Windows.Forms.CheckBox()
         Me.showRooting = New System.Windows.Forms.Button()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -59,6 +60,7 @@ Partial Class Form1
         '
         Me.Panel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.ComboBox1)
         Me.Panel1.Controls.Add(Me.addLabel)
         Me.Panel1.Controls.Add(Me.drawGreen)
         Me.Panel1.Controls.Add(Me.showRooting)
@@ -97,6 +99,15 @@ Partial Class Form1
         Me.showRooting.Text = "ルーティング表示"
         Me.showRooting.UseVisualStyleBackColor = True
         '
+        'ComboBox1
+        '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(12, 151)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(121, 20)
+        Me.ComboBox1.TabIndex = 13
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -118,4 +129,5 @@ Partial Class Form1
     Friend WithEvents addLabel As Button
     Friend WithEvents drawGreen As CheckBox
     Friend WithEvents showRooting As Button
+    Friend WithEvents ComboBox1 As ComboBox
 End Class

@@ -20,6 +20,16 @@
         setHandler(Label1)
         setHandler(Label2)
 
+        ' コンボボックスの設定
+        Me.ComboBox1.DisplayMember = "value"
+        Me.ComboBox1.ValueMember = "key"
+        Dim items As New List(Of KeyValuePair(Of RootingMode, String))
+        items.Add(New KeyValuePair(Of RootingMode, String)(RootingMode.Auto, "自動"))
+        items.Add(New KeyValuePair(Of RootingMode, String)(RootingMode.Left, "左端"))
+        items.Add(New KeyValuePair(Of RootingMode, String)(RootingMode.LeftToRight, "左まわりで右端"))
+        items.Add(New KeyValuePair(Of RootingMode, String)(RootingMode.Right, "右端"))
+        Me.ComboBox1.DataSource = items
+
     End Sub
 
     ''' <summary>
@@ -146,7 +156,6 @@
             End If
         End If
 
-
         ' 最初に選択されるラベルを取得する
         Dim isReverce As Boolean = False
         Dim targetX As Integer
@@ -156,6 +165,24 @@
         Else
             targetX = leftX
         End If
+
+        ' デバッグ用：コンボボックスの設定値を反映
+        Dim selectedValue As RootingMode = DirectCast(Me.ComboBox1.SelectedValue, RootingMode)
+        Select Case selectedValue
+            Case RootingMode.Left
+                targetX = leftX
+                Me.isSpecialMode = False
+            Case RootingMode.LeftToRight
+                targetX = rightX
+                isReverce = True
+                Me.isSpecialMode = True
+            Case RootingMode.Right
+                targetX = rightX
+                isReverce = True
+                Me.isSpecialMode = False
+        End Select
+
+
         Dim target As Label = upperLineQuery.Where(Function(item) item.Location.X = targetX).First()
 
         ' リストを作成する
