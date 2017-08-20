@@ -141,7 +141,13 @@
                 Me.isSpecialMode = True
             End If
         End If
-
+        If Me.isSpecialMode Then
+            Dim lines = labels.Select(Function(item) item.Location.Y).OrderBy((Function(itemY) itemY)).Distinct()
+            If lines.Where(Function(itemY) itemY <= startLabel.Location.Y).Count Mod 2 = 1 Then
+                ' 奇数の場合は特殊ルート
+                Me.isSpecialMode = False
+            End If
+        End If
 
         ' 上段の左端と右端を取得する
         Dim minY As Integer = labels.Min(Function(item) item.Location.Y)
