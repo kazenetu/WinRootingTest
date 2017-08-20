@@ -156,7 +156,7 @@
         Dim rightX As Integer = upperLineQuery.Max(Function(i) i.Location.X)
 
         ' 特殊ルート設定確認と再設定
-        If Me.isSpecialMode Then
+        If Not leftX = rightX AndAlso Me.isSpecialMode Then
             If startLabel.Location.X = rightX Then
                 Me.isSpecialMode = False
             End If
