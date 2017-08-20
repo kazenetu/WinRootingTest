@@ -477,7 +477,7 @@
                 If Me.isSpecialMode Then
 
                     ' 折り返し線：特殊ルート：横線
-                    Dim nextQuery = rootList.Where(Function(item) item.Location.Y = rootList(1).Location.Y)
+                    Dim nextQuery = rootList.Where(Function(item) item.Location.Y <= rootList(0).Location.Y)
                     targetLinePos.X = nextQuery.Min(Function(item) item.Location.X) - centerPos.X * 2
                     result.Add(targetLinePos)
 
