@@ -500,27 +500,12 @@
                         Dim leftQuery = rootList.Where(Function(item) item.Location.Y <= rootList(0).Location.Y)
                         targetLinePos.X = leftQuery.Min(Function(item) item.Location.X) - centerPos.X * 2
 
-
-                        'If targetDir.X < 0 Then
-                        '    ' アイテムに対して開始位置は左
-                        '    targetLinePos.X = targetPos.X - centerPos.X * 2
-                        'Else
-                        '    ' アイテムに対して開始位置は右
-                        '    targetLinePos.X = nextPos.X - centerPos.X * 2
-                        'End If
                         isRight = True
                     Else
                         ' 次のアイテムは右端
                         Dim rightQuery = rootList.Where(Function(item) item.Location.Y <= rootList(0).Location.Y)
                         targetLinePos.X = rightQuery.Max(Function(item) item.Location.X) + centerPos.X * 4
 
-                        'If targetDir.X < 0 Then
-                        '    ' アイテムに対して開始位置は左
-                        '    targetLinePos.X = nextPos.X + centerPos.X * 2
-                        'Else
-                        '    ' アイテムに対して開始位置は右
-                        '    targetLinePos.X = targetPos.X + centerPos.X * 2
-                        'End If
                         isRight = False
                     End If
                     result.Add(targetLinePos)
