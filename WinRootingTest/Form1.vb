@@ -144,7 +144,7 @@
         If Me.isSpecialMode Then
             Dim lines = labels.Select(Function(item) item.Location.Y).OrderBy((Function(itemY) itemY)).Distinct()
             If lines.Where(Function(itemY) itemY <= startLabel.Location.Y).Count Mod 2 = 1 Then
-                ' 奇数の場合は特殊ルート
+                ' 偶数の場合は特殊ルートを解除
                 Me.isSpecialMode = False
             End If
         End If
