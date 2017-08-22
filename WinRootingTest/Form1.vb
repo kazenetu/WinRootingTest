@@ -433,9 +433,12 @@
 
         ' 向きを計算
         Dim targetDir As Point = targetPos - nextPos
+        Dim targetX = rootList(0).Location.X
 
         ' 開始位置を除外した中継点リストを取得する
         Dim query = rootList.Where(Function(item) Not item Is rootList(0))
+        Dim minX = query.Min(Function(item) item.Location.X)
+        Dim maxX = query.Max(Function(item) item.Location.X)
 
         ' 次のアイテムと同行の中継点リストを取得する
         Dim topQuery = query.Where(Function(item) item.Location.Y = rootList(1).Location.Y)
@@ -459,12 +462,12 @@
                 addX *= -1
             End If
         Else
-            If targetDir.X >= 0 Then
+            If targetX <= minX + (maxX - minX) / 2 Then
                 addX *= -1
             End If
         End If
 
-        If targetDir.X < 0 Then
+        If addX > 0 Then
             isRight = True
         Else
             isRight = False
@@ -516,9 +519,17 @@
                 End If
 
             Else
-                ' 縦線を描画
-                targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                result.Add(targetLinePos)
+                If minX < targetX AndAlso targetX < maxX Then
+                    isRight = Not isRight
+                Else
+                    ' 縦線を描画
+                    targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                    result.Add(targetLinePos)
+
+                    If targetDir.X = 0 Then
+                        isRight = Not isRight
+                    End If
+                End If
             End If
 
             ' 次のアイテムまでの横線を描画
