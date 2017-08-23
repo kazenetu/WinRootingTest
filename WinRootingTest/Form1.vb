@@ -467,7 +467,7 @@
             End If
         End If
 
-        If addX > 0 Then
+        If targetDir.X < 0 Then
             isRight = True
         Else
             isRight = False
@@ -519,8 +519,19 @@
                 End If
 
             Else
-                If minX < targetX AndAlso targetX < maxX Then
-                    isRight = Not isRight
+                If minX <= targetX AndAlso targetX <= maxX Then
+
+                    If targetDir.X = 0 Then
+                        ' 縦線を描画
+                        targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                        result.Add(targetLinePos)
+                    End If
+
+                    If addX < 0 Then
+                        isRight = True
+                    Else
+                        isRight = False
+                    End If
                 Else
                     ' 縦線を描画
                     targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
