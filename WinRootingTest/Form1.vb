@@ -450,7 +450,7 @@
                 isLineLeft = False
             End If
         Else
-            If topQuery.Max(Function(item) item.Location.X) < rootList(0).Location.X Then
+            If topQuery.Max(Function(item) item.Location.X) < targetX Then
                 isLineLeft = False
             End If
         End If
