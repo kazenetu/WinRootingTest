@@ -298,7 +298,6 @@
         Dim isRightStart As Boolean = isRight
         checkedRootList.Add(rootList(0))
 
-        'isRight = Not isRight
         ' 中継点を作成
         For index As Integer = 1 To rootList.Count - 2
             Dim listItem As New List(Of Point)
