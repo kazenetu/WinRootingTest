@@ -148,6 +148,13 @@
                 Me.isSpecialMode = False
             End If
         End If
+        If Me.isSpecialMode Then
+            Dim startYlines = labels.Where(Function(item) item.Location.Y = startLabel.Location.Y)
+            If startYlines.Any() AndAlso startYlines.Max(Function(item) item.Location.X) < startLabel.Location.X Then
+                ' 開始位置の右側に中継点がない場合は特殊ルートを解除
+                Me.isSpecialMode = False
+            End If
+        End If
 
         ' 上段の左端と右端を取得する
         Dim minY As Integer = labels.Min(Function(item) item.Location.Y)
