@@ -25,10 +25,11 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.addLabel = New System.Windows.Forms.Button()
         Me.drawGreen = New System.Windows.Forms.CheckBox()
         Me.showRooting = New System.Windows.Forms.Button()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.alwaysTurnLeft = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -60,14 +61,24 @@ Partial Class Form1
         '
         Me.Panel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.alwaysTurnLeft)
         Me.Panel1.Controls.Add(Me.ComboBox1)
         Me.Panel1.Controls.Add(Me.addLabel)
         Me.Panel1.Controls.Add(Me.drawGreen)
         Me.Panel1.Controls.Add(Me.showRooting)
-        Me.Panel1.Location = New System.Drawing.Point(523, 19)
+        Me.Panel1.Location = New System.Drawing.Point(632, 19)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(167, 191)
+        Me.Panel1.Size = New System.Drawing.Size(167, 259)
         Me.Panel1.TabIndex = 10
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(9, 200)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(121, 20)
+        Me.ComboBox1.TabIndex = 13
         '
         'addLabel
         '
@@ -83,7 +94,7 @@ Partial Class Form1
         Me.drawGreen.AutoSize = True
         Me.drawGreen.Checked = True
         Me.drawGreen.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.drawGreen.Location = New System.Drawing.Point(34, 119)
+        Me.drawGreen.Location = New System.Drawing.Point(9, 121)
         Me.drawGreen.Name = "drawGreen"
         Me.drawGreen.Size = New System.Drawing.Size(81, 16)
         Me.drawGreen.TabIndex = 11
@@ -99,20 +110,23 @@ Partial Class Form1
         Me.showRooting.Text = "ルーティング表示"
         Me.showRooting.UseVisualStyleBackColor = True
         '
-        'ComboBox1
+        'alwaysTurnLeft
         '
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(12, 151)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 20)
-        Me.ComboBox1.TabIndex = 13
+        Me.alwaysTurnLeft.AutoSize = True
+        Me.alwaysTurnLeft.Checked = True
+        Me.alwaysTurnLeft.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.alwaysTurnLeft.Location = New System.Drawing.Point(9, 153)
+        Me.alwaysTurnLeft.Name = "alwaysTurnLeft"
+        Me.alwaysTurnLeft.Size = New System.Drawing.Size(133, 16)
+        Me.alwaysTurnLeft.TabIndex = 14
+        Me.alwaysTurnLeft.Text = "改行後は常に左端から"
+        Me.alwaysTurnLeft.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(702, 447)
+        Me.ClientSize = New System.Drawing.Size(811, 500)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
@@ -130,4 +144,5 @@ Partial Class Form1
     Friend WithEvents drawGreen As CheckBox
     Friend WithEvents showRooting As Button
     Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents alwaysTurnLeft As CheckBox
 End Class
