@@ -252,10 +252,16 @@
             Dim oldX = target.Location.X
             Dim targetQuery = query.OrderBy(Function(item) item.Location.Y)
             If direction = RootingDirection.Vertical Then
-                If isReverce Then
+                If Me.alwaysTurnLeft.Checked Then
+                    ' 常に左端を選択
                     targetQuery = targetQuery.ThenBy(Function(item) item.Location.X)
                 Else
-                    targetQuery = targetQuery.ThenByDescending(Function(item) item.Location.X)
+                    ' 状況に応じて左端・右端を選択
+                    If isReverce Then
+                        targetQuery = targetQuery.ThenBy(Function(item) item.Location.X)
+                    Else
+                        targetQuery = targetQuery.ThenByDescending(Function(item) item.Location.X)
+                    End If
                 End If
             Else
                 targetQuery = targetQuery.ThenBy(Function(item) getDistance(item.Location, target.Location))
