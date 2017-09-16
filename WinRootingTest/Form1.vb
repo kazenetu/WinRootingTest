@@ -178,6 +178,9 @@
         Else
             targetX = leftX
         End If
+        If Me.alwaysTurnLeft.Checked Then
+            targetX = leftX
+        End If
 
         ' デバッグ用：コンボボックスの設定値を反映
         Dim selectedValue As RootingMode = DirectCast(Me.ComboBox1.SelectedValue, RootingMode)
