@@ -513,9 +513,13 @@
 
         ' 「緑線を表示」にチェックされていれば表示
         If Me.drawGreen.Checked Then
+            Dim baseZero = 0
+            If Me.alwaysTurnLeft.Checked Then
+                baseZero = -50
+            End If
 
             ' 高さが異なる場合は迂回する
-            If targetDir.Y >= 0 Then
+            If targetDir.Y >= baseZero Then
 
                 If Me.isSpecialMode Then
 
@@ -548,14 +552,18 @@
 
                     ' 縦線を描画
                     targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                    If Not isLineLeft AndAlso Me.alwaysTurnLeft.Checked Then
-                        targetLinePos.Y -= spaceSize
+                    If Me.alwaysTurnLeft.Checked Then
+                        If targetDir.Y < 0 Then
+                            targetLinePos.Y = targetPos.Y - (spaceSize + centerPos.Y)
+                        ElseIf Not isLineLeft Then
+                            targetLinePos.Y -= spaceSize
+                        End If
                     End If
 
                     result.Add(targetLinePos)
-                    End If
+                End If
 
-                    Else
+            Else
                 If minX <= targetX AndAlso targetX <= maxX Then
 
                     If targetDir.X = 0 Then
