@@ -473,13 +473,19 @@
 
         ' 左側に線を引くか確認
         Dim isLineLeft As Boolean = True
-        If topQuery.Count > 1 Then
-            If topQuery.Max(Function(item) item.Location.X) = rootList(1).Location.X Then
+        If Me.alwaysTurnLeft.Checked Then
+            If topQuery.Max(Function(item) item.Location.X) < targetX Then
                 isLineLeft = False
             End If
         Else
-            If topQuery.Max(Function(item) item.Location.X) < targetX Then
-                isLineLeft = False
+            If topQuery.Count > 1 Then
+                If topQuery.Max(Function(item) item.Location.X) = rootList(1).Location.X Then
+                    isLineLeft = False
+                End If
+            Else
+                If topQuery.Max(Function(item) item.Location.X) < targetX Then
+                    isLineLeft = False
+                End If
             End If
         End If
 
@@ -542,10 +548,14 @@
 
                     ' 縦線を描画
                     targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                    result.Add(targetLinePos)
-                End If
+                    If Not isLineLeft AndAlso Me.alwaysTurnLeft.Checked Then
+                        targetLinePos.Y -= spaceSize
+                    End If
 
-            Else
+                    result.Add(targetLinePos)
+                    End If
+
+                    Else
                 If minX <= targetX AndAlso targetX <= maxX Then
 
                     If targetDir.X = 0 Then
