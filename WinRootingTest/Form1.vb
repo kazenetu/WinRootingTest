@@ -399,7 +399,16 @@
 
                     Else
                         ' 縦線を描画
-                        targetLinePos.Y += targetDir.Y * -1
+                        If Me.alwaysTurnLeft.Checked Then
+                            If targetDir.Y > 0 Then
+                                targetLinePos.Y += (centerPos.Y + spaceSize) * -2
+                            Else
+                                targetLinePos.Y += (centerPos.Y + spaceSize) * 2
+                            End If
+                            targetLinePos.Y = nextPos.Y - (centerPos.Y * 2 - spaceSize)
+                        Else
+                            targetLinePos.Y += targetDir.Y * -1
+                        End If
                         listItem.Add(targetLinePos)
 
                         If Not isUp Then
@@ -410,12 +419,16 @@
                     isRight = targetLinePos.X < nextPos.X
                 End If
 
+                If Me.alwaysTurnLeft.Checked Then
+                    isRight = True
+                End If
 
                 ' 次のアイテムまでの横線を描画
                 targetLinePos.X = nextPos.X
                 listItem.Add(targetLinePos)
                 ' 短い縦線を描画
                 targetLinePos.Y += spaceSize
+                targetLinePos.Y = nextPos.Y + spaceSize
                 listItem.Add(targetLinePos)
             End If
 
@@ -511,7 +524,6 @@
 
                     isRight = False
                 Else
-
                     ' 折り返し線：横線
                     If isLineLeft Then
                         ' 次のアイテムは左端
@@ -548,9 +560,15 @@
                         isRight = False
                     End If
                 Else
+
                     ' 縦線を描画
-                    targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                    result.Add(targetLinePos)
+                    If Me.alwaysTurnLeft.Checked Then
+                        targetLinePos.Y = targetPos.Y + (spaceSize + centerPos.Y）
+                        result.Add(targetLinePos)
+                    Else
+                        targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
+                        result.Add(targetLinePos)
+                    End If
 
                     If targetDir.X = 0 Then
                         isRight = Not isRight
@@ -565,6 +583,11 @@
             targetLinePos.Y = nextPos.Y + spaceSize
             result.Add(targetLinePos)
         End If
+
+        If Me.alwaysTurnLeft.Checked Then
+            isRight = True
+        End If
+
 
         Return result
     End Function
