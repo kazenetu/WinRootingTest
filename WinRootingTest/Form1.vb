@@ -114,10 +114,15 @@
     Private isSpecialMode As Boolean
 
     ''' <summary>
+    ''' 常時左端からスタートフラグ
+    ''' </summary>
+    Private alwaysStartLeft As Boolean
+
+    ''' <summary>
     ''' Labelルーティングの生成
     ''' </summary>
     ''' <returns></returns>
-    Private Function getRootingList() As List(Of Label)
+    Private Function getRootingList(ByVal alwaysStartLeft As Boolean) As List(Of Label)
         Dim startLabel As Label = Label1
 
         ' ラベルリスト作成
@@ -130,6 +135,9 @@
 
         ' 特殊ルート設定フラグをクリア
         Me.isSpecialMode = False
+
+        ' 常時左端からスタートフラグを設定
+        Me.alwaysStartLeft = alwaysStartLeft
 
         ' 特殊ルート設定条件
         If labels.Min(Function(item) item.Location.X) <= startLabel.Location.X AndAlso
@@ -178,7 +186,9 @@
         Else
             targetX = leftX
         End If
-        If Me.alwaysTurnLeft.Checked Then
+
+        ' 「常に左端」の場合は左端を選択
+        If Me.alwaysStartLeft Then
             targetX = leftX
         End If
 
@@ -255,8 +265,9 @@
             Dim oldX = target.Location.X
             Dim targetQuery = query.OrderBy(Function(item) item.Location.Y)
             If direction = RootingDirection.Vertical Then
-                If Me.alwaysTurnLeft.Checked Then
-                    ' 常に左端を選択
+
+                If Me.alwaysStartLeft Then
+                    ' 「常に左端」の場合、常に左端を選択
                     targetQuery = targetQuery.ThenBy(Function(item) item.Location.X)
                 Else
                     ' 状況に応じて左端・右端を選択
@@ -399,7 +410,9 @@
 
                     Else
                         ' 縦線を描画
-                        If Me.alwaysTurnLeft.Checked Then
+                        If Me.alwaysStartLeft Then
+
+                            ' 「常に左端」の場合
                             If targetDir.Y > 0 Then
                                 targetLinePos.Y += (centerPos.Y + spaceSize) * -2
                             Else
@@ -419,7 +432,8 @@
                     isRight = targetLinePos.X < nextPos.X
                 End If
 
-                If Me.alwaysTurnLeft.Checked Then
+                ' 「常に左端」の場合は左端を選択
+                If Me.alwaysStartLeft Then
                     isRight = True
                 End If
 
@@ -473,7 +487,9 @@
 
         ' 左側に線を引くか確認
         Dim isLineLeft As Boolean = True
-        If Me.alwaysTurnLeft.Checked Then
+        If Me.alwaysStartLeft Then
+
+            ' 「常に左端」で開始位置右端の場合は右側にラインを引く
             If topQuery.Max(Function(item) item.Location.X) < targetX Then
                 isLineLeft = False
             End If
@@ -514,7 +530,9 @@
         ' 「緑線を表示」にチェックされていれば表示
         If Me.drawGreen.Checked Then
             Dim baseZero = 0
-            If Me.alwaysTurnLeft.Checked Then
+
+            ' 「常に左端」の場合は半分移動分まで許容する
+            If Me.alwaysStartLeft Then
                 baseZero = -50
             End If
 
@@ -552,7 +570,7 @@
 
                     ' 縦線を描画
                     targetLinePos.Y = nextPos.Y - (spaceSize + centerPos.Y)
-                    If Me.alwaysTurnLeft.Checked Then
+                    If Me.alwaysStartLeft Then
                         If targetDir.Y < 0 Then
                             targetLinePos.Y = targetPos.Y - (spaceSize + centerPos.Y)
                         ElseIf Not isLineLeft Then
@@ -580,7 +598,7 @@
                 Else
 
                     ' 縦線を描画
-                    If Me.alwaysTurnLeft.Checked Then
+                    If Me.alwaysStartLeft Then
                         targetLinePos.Y = targetPos.Y + (spaceSize + centerPos.Y）
                         result.Add(targetLinePos)
                     Else
@@ -602,7 +620,8 @@
             result.Add(targetLinePos)
         End If
 
-        If Me.alwaysTurnLeft.Checked Then
+        ' 「常に左端」の場合は右に設定
+        If Me.alwaysStartLeft Then
             isRight = True
         End If
 
@@ -632,7 +651,7 @@
         Me.clearRooting()
 
         ' ルーティングリストを取得
-        Dim rootings As List(Of Label) = Me.getRootingList()
+        Dim rootings As List(Of Label) = Me.getRootingList(Me.alwaysTurnLeft.Checked)
 
         ' 描画処理
         Dim ptStart As Point = rootings(0).Location
