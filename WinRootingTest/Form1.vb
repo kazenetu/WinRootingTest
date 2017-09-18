@@ -119,10 +119,15 @@
     Private alwaysStartLeft As Boolean
 
     ''' <summary>
+    ''' 中継点のみ対象フラグ
+    ''' </summary>
+    Private targetRelayPoints As Boolean
+
+    ''' <summary>
     ''' Labelルーティングの生成
     ''' </summary>
     ''' <returns></returns>
-    Private Function getRootingList(ByVal alwaysStartLeft As Boolean) As List(Of Label)
+    Private Function getRootingList(ByVal alwaysStartLeft As Boolean, ByVal targetRelayPoints As Boolean) As List(Of Label)
         Dim startLabel As Label = Label1
 
         ' ラベルリスト作成
@@ -138,6 +143,9 @@
 
         ' 常時左端からスタートフラグを設定
         Me.alwaysStartLeft = alwaysStartLeft
+
+        ' 中継点のみ対象フラグを設定
+        Me.targetRelayPoints = targetRelayPoints
 
         ' 特殊ルート設定条件
         If labels.Min(Function(item) item.Location.X) <= startLabel.Location.X AndAlso
@@ -192,6 +200,11 @@
             targetX = leftX
         End If
 
+        ' 中継点のみ対象フラグの場合は左端を選択
+        If Me.targetRelayPoints Then
+            targetX = leftX
+        End If
+
         ' デバッグ用：コンボボックスの設定値を反映
         Dim selectedValue As RootingMode = DirectCast(Me.ComboBox1.SelectedValue, RootingMode)
         Select Case selectedValue
@@ -213,7 +226,11 @@
 
         ' リストを作成する
         Dim result As New List(Of Label)
-        result.Add(startLabel)
+
+        ' 「中継点のみ対象フラグ」以外の場合は開始位置をリストに追加
+        If Not Me.targetRelayPoints Then
+            result.Add(startLabel)
+        End If
 
         ' 戻り値リストの追加と追加対象リストの削除
         result.Add(target)
@@ -320,13 +337,20 @@
         Dim nextPos As Point = Nothing
         Dim targetLinePos As Point = Nothing
 
-        ' 開始を作成
-        result.Add(Me.createLineStart(rootList, spaceSize, isRight))
-        Dim isRightStart As Boolean = isRight
-        checkedRootList.Add(rootList(0))
+        Dim startIndex As Integer = 0
+        If Me.targetRelayPoints Then
+            ' 「中継点のみ対象フラグ」の場合は斜め線を右側に傾ける
+            isRight = True
+        Else
+            ' 「中継点のみ対象フラグ」以外の場合は開始位置を作成
+            result.Add(Me.createLineStart(rootList, spaceSize, isRight))
+            Dim isRightStart As Boolean = isRight
+            checkedRootList.Add(rootList(startIndex))
+            startIndex += 1
+        End If
 
         ' 中継点を作成
-        For index As Integer = 1 To rootList.Count - 2
+        For index As Integer = startIndex To rootList.Count - 2
             Dim listItem As New List(Of Point)
 
             targetPos = rootList(index).Location + centerPos
@@ -651,7 +675,10 @@
         Me.clearRooting()
 
         ' ルーティングリストを取得
-        Dim rootings As List(Of Label) = Me.getRootingList(Me.alwaysTurnLeft.Checked)
+        Dim rootings As List(Of Label) = Me.getRootingList(Me.alwaysTurnLeft.Checked, Me.startRelayPoint.Checked)
+        If rootings.Count < 2 Then
+            Return
+        End If
 
         ' 描画処理
         Dim ptStart As Point = rootings(0).Location
