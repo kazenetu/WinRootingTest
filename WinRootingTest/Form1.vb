@@ -165,19 +165,22 @@
             'End If
 
             Dim startYLine = lines.Where(Function(itemY) itemY <= startLabel.Location.Y)
-            If startYLine.Count Mod 2 = 1 AndAlso lines.Count = startYLine.Count Then
+            Dim startYLineCount = startYLine.Count
+            If startYLineCount Mod 2 = 1 AndAlso lines.Count >= startYLineCount Then
                 ' 奇数の場合は特殊ルートを解除
                 Me.isSpecialMode = False
             End If
         End If
         If Me.isSpecialMode Then
             Dim startYlines = labels.Where(Function(item) item.Location.Y = startLabel.Location.Y)
+            Dim lines = labels.Select(Function(item) item.Location.Y).OrderBy((Function(itemY) itemY)).Distinct()
+
             'If startYlines.Any() AndAlso startYlines.Max(Function(item) item.Location.X) < startLabel.Location.X Then
             '    ' 開始位置の右側に中継点がない場合は特殊ルートを解除
             '    Me.isSpecialMode = False
             'End If
 
-            If Not startYlines.Any() Then
+            If Not startYlines.Any() AndAlso startLabel.Location.Y >= lines.Max() Then
                 ' 開始位置に中継点がない場合は特殊ルートを解除
                 Me.isSpecialMode = False
             End If
