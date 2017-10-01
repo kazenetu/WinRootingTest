@@ -25,13 +25,13 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.startRelayPoint = New System.Windows.Forms.CheckBox()
         Me.alwaysTurnLeft = New System.Windows.Forms.CheckBox()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.addLabel = New System.Windows.Forms.Button()
         Me.drawGreen = New System.Windows.Forms.CheckBox()
         Me.showRooting = New System.Windows.Forms.Button()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.startRelayPoint = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -74,11 +74,32 @@ Partial Class Form1
         Me.Panel1.Size = New System.Drawing.Size(176, 287)
         Me.Panel1.TabIndex = 10
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.startRelayPoint)
+        Me.GroupBox1.Controls.Add(Me.alwaysTurnLeft)
+        Me.GroupBox1.Location = New System.Drawing.Point(9, 150)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(153, 94)
+        Me.GroupBox1.TabIndex = 15
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "特殊設定"
+        '
+        'startRelayPoint
+        '
+        Me.startRelayPoint.AutoSize = True
+        Me.startRelayPoint.Checked = True
+        Me.startRelayPoint.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.startRelayPoint.Location = New System.Drawing.Point(6, 49)
+        Me.startRelayPoint.Name = "startRelayPoint"
+        Me.startRelayPoint.Size = New System.Drawing.Size(143, 16)
+        Me.startRelayPoint.TabIndex = 15
+        Me.startRelayPoint.Text = "左上の中継点から始める"
+        Me.startRelayPoint.UseVisualStyleBackColor = True
+        '
         'alwaysTurnLeft
         '
         Me.alwaysTurnLeft.AutoSize = True
-        Me.alwaysTurnLeft.Checked = True
-        Me.alwaysTurnLeft.CheckState = System.Windows.Forms.CheckState.Checked
         Me.alwaysTurnLeft.Location = New System.Drawing.Point(6, 27)
         Me.alwaysTurnLeft.Name = "alwaysTurnLeft"
         Me.alwaysTurnLeft.Size = New System.Drawing.Size(133, 16)
@@ -124,29 +145,6 @@ Partial Class Form1
         Me.showRooting.TabIndex = 10
         Me.showRooting.Text = "ルーティング表示"
         Me.showRooting.UseVisualStyleBackColor = True
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.startRelayPoint)
-        Me.GroupBox1.Controls.Add(Me.alwaysTurnLeft)
-        Me.GroupBox1.Location = New System.Drawing.Point(9, 150)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(153, 94)
-        Me.GroupBox1.TabIndex = 15
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "特殊設定"
-        '
-        'startRelayPoint
-        '
-        Me.startRelayPoint.AutoSize = True
-        Me.startRelayPoint.Checked = True
-        Me.startRelayPoint.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.startRelayPoint.Location = New System.Drawing.Point(6, 49)
-        Me.startRelayPoint.Name = "startRelayPoint"
-        Me.startRelayPoint.Size = New System.Drawing.Size(143, 16)
-        Me.startRelayPoint.TabIndex = 15
-        Me.startRelayPoint.Text = "左上の中継点から始める"
-        Me.startRelayPoint.UseVisualStyleBackColor = True
         '
         'Form1
         '
