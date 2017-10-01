@@ -351,6 +351,8 @@
         Dim nextPos As Point = Nothing
         Dim targetLinePos As Point = Nothing
 
+        Dim startPos As New Point(-1, -1)
+
         Dim startIndex As Integer = 0
         If Me.targetRelayPoints Then
             ' 「中継点のみ対象フラグ」の場合は斜め線を右側に傾ける
@@ -360,6 +362,10 @@
             result.Add(Me.createLineStart(rootList, spaceSize, isRight))
             Dim isRightStart As Boolean = isRight
             checkedRootList.Add(rootList(startIndex))
+
+            ' 開始位置を専用変数に設定
+            startPos = rootList(startIndex).Location + centerPos
+
             startIndex += 1
         End If
 
@@ -415,8 +421,12 @@
                         targetLinePos.X += lineX
 
                         If isRight Then
-                            If targetLinePos.X < nextPos.X Then
-                                targetLinePos.X = nextPos.X
+                            If startPos.Y >= targetPos.Y AndAlso startPos.Y <= nextPos.Y Then
+                                targetLinePos.X = startPos.X + (centerPos.Y + spaceSize) * 2
+                            Else
+                                If targetLinePos.X < nextPos.X Then
+                                    targetLinePos.X = nextPos.X
+                                End If
                             End If
                         Else
                             If targetLinePos.X > nextPos.X Then
