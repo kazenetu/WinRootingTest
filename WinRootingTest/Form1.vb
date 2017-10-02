@@ -294,6 +294,7 @@
 
             ' 絞り込んだ条件から一番近いオブジェクトを次の移動先オブジェクトとして選択する
             Dim oldX = target.Location.X
+            Dim oldY = target.Location.Y
             Dim targetQuery = query.OrderBy(Function(item) item.Location.Y)
             If direction = RootingDirection.Vertical Then
 
@@ -315,11 +316,11 @@
 
             ' 方向転換の判定
             If isReverce Then
-                If target.Location.X >= oldX Then
+                If target.Location.X >= oldX OrElse Not target.Location.Y = oldY Then
                     isReverce = Not isReverce
                 End If
             Else
-                If target.Location.X <= oldX Then
+                If target.Location.X <= oldX OrElse Not target.Location.Y = oldY Then
                     isReverce = Not isReverce
                 End If
             End If
