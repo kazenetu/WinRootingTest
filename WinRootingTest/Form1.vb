@@ -422,7 +422,7 @@
                         targetLinePos.X += lineX
 
                         If isRight Then
-                            If startPos.Y >= targetPos.Y AndAlso startPos.Y <= nextPos.Y Then
+                            If startPos.Y >= targetPos.Y AndAlso startPos.Y <= nextPos.Y AndAlso nextPos.X <= startPos.X Then
                                 targetLinePos.X = startPos.X + (centerPos.Y + spaceSize) * 2
                             Else
                                 If targetLinePos.X < nextPos.X Then
