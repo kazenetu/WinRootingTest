@@ -208,6 +208,7 @@
         ' 中継点のみ対象フラグの場合は左端を選択
         If Me.targetRelayPoints Then
             targetX = leftX
+            isReverce = False
         End If
 
         ' デバッグ用：コンボボックスの設定値を反映
