@@ -432,43 +432,25 @@
 
                     listItem.Add(targetLinePos)
 
-                    If targetDir.X = 0 And False Then
-                        ' 回り込む
+                    ' 縦線を描画
+                    If Me.alwaysStartLeft Then
 
-                        isRight = lineAddX < 0
-
-                        ' 縦線を描画
-                        targetLinePos.Y = targetPos.Y + centerPos.Y * 2
-                        listItem.Add(targetLinePos)
-
-                        ' 次のアイテムまでの横線を描画
-                        targetLinePos.X = nextPos.X
-                        listItem.Add(targetLinePos)
-
-                        ' 縦線を描画
-                        targetLinePos.Y = nextPos.Y - spaceSize
-                        listItem.Add(targetLinePos)
-
-                    Else
-                        ' 縦線を描画
-                        If Me.alwaysStartLeft Then
-
-                            ' 「常に左端」の場合
-                            If targetDir.Y > 0 Then
-                                targetLinePos.Y += (centerPos.Y + spaceSize) * -2
-                            Else
-                                targetLinePos.Y += (centerPos.Y + spaceSize) * 2
-                            End If
-                            targetLinePos.Y = nextPos.Y - (centerPos.Y * 2 - spaceSize)
+                        ' 「常に左端」の場合
+                        If targetDir.Y > 0 Then
+                            targetLinePos.Y += (centerPos.Y + spaceSize) * -2
                         Else
-                            targetLinePos.Y += targetDir.Y * -1
+                            targetLinePos.Y += (centerPos.Y + spaceSize) * 2
                         End If
-                        listItem.Add(targetLinePos)
-
-                        If Not isUp Then
-                            isRight = Not isRight
-                        End If
+                        targetLinePos.Y = nextPos.Y - (centerPos.Y * 2 - spaceSize)
+                    Else
+                        targetLinePos.Y += targetDir.Y * -1
                     End If
+                    listItem.Add(targetLinePos)
+
+                    If Not isUp Then
+                        isRight = Not isRight
+                    End If
+
                 Else
                     isRight = targetLinePos.X < nextPos.X
                 End If
