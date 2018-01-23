@@ -19,6 +19,7 @@
         ' ラベルのイベント設定
         setHandler(Label1)
         setHandler(Label2)
+        setHandler(InitPoint)
 
         ' コンボボックスの設定
         Me.ComboBox1.DisplayMember = "value"
@@ -133,7 +134,7 @@
         ' ラベルリスト作成
         Dim labels As New List(Of Label)
         For Each item As Control In Me.Controls
-            If TypeOf item Is Label AndAlso Not item Is Label1 Then
+            If TypeOf item Is Label AndAlso Not (item Is Label1 OrElse item Is InitPoint) Then
                 labels.Add(item)
             End If
         Next
@@ -232,6 +233,11 @@
 
         ' リストを作成する
         Dim result As New List(Of Label)
+
+        ' 「初期位置から開始」の場合は初期位置をリストに追加
+        If Me.useStartPos.Checked Then
+            result.Add(InitPoint)
+        End If
 
         ' 「中継点のみ対象フラグ」以外の場合は開始位置をリストに追加
         If Not Me.targetRelayPoints Then
@@ -726,4 +732,12 @@
         End Using
     End Sub
 
+    ''' <summary>
+    ''' 初期位置チェックボックス値変更イベント
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub useStartPos_CheckedChanged(sender As Object, e As EventArgs) Handles useStartPos.CheckedChanged
+        InitPoint.Visible = useStartPos.Checked
+    End Sub
 End Class
